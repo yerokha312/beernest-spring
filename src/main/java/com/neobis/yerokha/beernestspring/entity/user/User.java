@@ -12,7 +12,8 @@ import lombok.Setter;
 import java.sql.Date;
 import java.util.Objects;
 
-@Getter @Setter
+@Getter
+@Setter
 @MappedSuperclass
 public abstract class User {
     @Id
