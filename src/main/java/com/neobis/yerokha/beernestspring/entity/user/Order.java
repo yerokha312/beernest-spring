@@ -1,6 +1,5 @@
 package com.neobis.yerokha.beernestspring.entity.user;
 
-import com.neobis.yerokha.beernestspring.entity.beer.Beer;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
