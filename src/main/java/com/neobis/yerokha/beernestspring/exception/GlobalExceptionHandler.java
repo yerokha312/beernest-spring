@@ -12,4 +12,20 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleBeerDoesNotExist(BeerDoesNotExistException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
+
+    @ExceptionHandler({EmailAlreadyTakenException.class})
+    public ResponseEntity<String> handleEmailAlreadyTaken(EmailAlreadyTakenException exception) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
+    }
+
+    @ExceptionHandler({CustomerDoesNotExistException.class})
+    public ResponseEntity<String> handleCustomerDoesNotExist(CustomerDoesNotExistException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+
+    @ExceptionHandler({PhoneNumberAlreadyTakenException.class})
+    public ResponseEntity<String> handlePhoneNumberAlreadyTaken(PhoneNumberAlreadyTakenException exception) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
+    }
+
 }

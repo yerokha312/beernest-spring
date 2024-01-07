@@ -1,5 +1,6 @@
 package com.neobis.yerokha.beernestspring.entity.beer;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.neobis.yerokha.beernestspring.enums.Container;
 import com.neobis.yerokha.beernestspring.enums.Style;
 import jakarta.persistence.CascadeType;
@@ -7,7 +8,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -41,10 +41,12 @@ public class Beer {
     private Style style;
 
     @ManyToOne
+//    @JsonBackReference
     @JoinColumn(name = "substyle_id")
     private Substyle substyle;
 
     @ManyToOne
+//    @JsonBackReference
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
@@ -67,9 +69,12 @@ public class Beer {
     @Column(name = "country")
     private String country;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "description_id")
     private BeerDescription beerDescription;
+
+    @Column(name = "sold_amount")
+    private Long soldAmount;
 
     @Column(name = "stock_amount")
     private Integer stockAmount;

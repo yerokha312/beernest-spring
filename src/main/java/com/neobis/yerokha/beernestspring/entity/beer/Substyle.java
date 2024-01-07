@@ -14,7 +14,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -33,8 +34,16 @@ public class Substyle {
     @Column(name = "name", unique = true)
     private String name;
 
+//    @JsonManagedReference
     @OneToMany(mappedBy = "substyle", fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    private List<Beer> beerList;
+    private static Set<Beer> beerSet;
+
+    public void addBeer(Beer beer) {
+        if (beerSet == null) {
+            beerSet = new HashSet<>();
+        }
+        beerSet.add(beer);
+    }
 
 }

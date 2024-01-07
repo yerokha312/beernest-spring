@@ -9,7 +9,8 @@ CREATE TABLE brand
 (
     brand_id bigserial,
     name     varchar(255),
-    PRIMARY KEY (brand_id)
+    PRIMARY KEY (brand_id),
+    UNIQUE (name)
 );
 
 CREATE TABLE customer
@@ -21,7 +22,7 @@ CREATE TABLE customer
     email      varchar(255),
     phone      varchar(255),
     password   varchar(255),
-    active     boolean,
+    active     boolean DEFAULT TRUE,
     PRIMARY KEY (id),
     UNIQUE (email),
     UNIQUE (phone)
@@ -36,7 +37,7 @@ CREATE TABLE employee
     email      varchar(255),
     phone      varchar(255),
     password   varchar(255),
-    active     boolean,
+    active     boolean DEFAULT TRUE,
     PRIMARY KEY (id),
     UNIQUE (email),
     UNIQUE (phone)
@@ -83,6 +84,7 @@ CREATE TABLE beer
     selling_price  numeric(10, 2),
     country        varchar(255),
     description_id bigint,
+    sold_amount    bigint,
     stock_amount   integer,
     PRIMARY KEY (beer_id),
     UNIQUE (description_id),
