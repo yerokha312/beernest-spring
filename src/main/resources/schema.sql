@@ -28,36 +28,18 @@ CREATE TABLE customer
     UNIQUE (phone)
 );
 
-CREATE TABLE employee
-(
-    id         bigserial,
-    first_name varchar(255),
-    last_name  varchar(255),
-    dob        date,
-    email      varchar(255),
-    phone      varchar(255),
-    password   varchar(255),
-    active     boolean DEFAULT TRUE,
-    PRIMARY KEY (id),
-    UNIQUE (email),
-    UNIQUE (phone)
-);
 
 CREATE TABLE orders
 (
     order_id      bigserial,
     creation_date date,
     customer_id   bigint,
-    employee_id   bigint,
     total_price   numeric(38, 2),
     status        varchar(255),
     PRIMARY KEY (order_id),
     UNIQUE (customer_id),
-    UNIQUE (employee_id),
     CONSTRAINT fk624gtjin3po807j3vix093tlf
-        FOREIGN KEY (customer_id) REFERENCES customer,
-    CONSTRAINT fkog5v9ga2g2ukytypn4ocip6b4
-        FOREIGN KEY (employee_id) REFERENCES employee
+        FOREIGN KEY (customer_id) REFERENCES customer
 );
 
 CREATE TABLE substyle

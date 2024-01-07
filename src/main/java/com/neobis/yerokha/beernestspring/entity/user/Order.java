@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -15,6 +16,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -36,16 +38,29 @@ public class Order {
     @Column(name = "status")
     private String status;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
-
-    @OneToOne
-    @JoinColumn(name = "employee_id")
-    private Employee employee;
 
     @OneToMany(mappedBy = "order",
             fetch = FetchType.EAGER,
             cascade = CascadeType.ALL)
-    List<OrderLine> orderLines;
+    private List<OrderItem> orderItems;
+
+    public void addOrderItem(OrderItem orderItem) {
+        if (orderItems == null) {
+            orderItems = new ArrayList<>();
+        }
+        orderItems.add(orderItem);
+    }
+
+    public void calculateTotalPrice() {
+        BigDecimal sum = BigDecimal.valueOf(0);
+        for (OrderItem orderItem : orderItems) {
+            sum.add(orderItem.getBeer().getSellingPrice()
+                    .multiply(BigDecimal.valueOf(orderItem.getQuantity())));
+        }
+
+        this.setTotalPrice(sum);
+    }
 }

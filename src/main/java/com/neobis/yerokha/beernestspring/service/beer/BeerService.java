@@ -32,27 +32,14 @@ public class BeerService {
 
     public void createBeer(Beer dto) {
 
-        Substyle savedSubstyle = substyleService.getSubstyleByName(dto.getSubstyle().getName()).orElseGet(() -> {
-            Substyle substyle = new Substyle();
-            substyle.setName(dto.getSubstyle().getName());
-            substyle.setStyle(dto.getStyle());
-            return substyleService.createSubstyle(substyle);
-        });
-
-        Brand savedBrand = brandService.getBrandByName(dto.getBrand().getName()).orElseGet(() -> {
-            Brand brand = new Brand();
-            brand.setName(dto.getBrand().getName());
-            return brandService.createBrand(brand);
-        });
+        Result result = checkFieldsDisctinction(dto);
 
         BeerDescription beerDescription = new BeerDescription();
         beerDescription.setDescription(dto.getBeerDescription().getDescription());
         BeerDescription savedBeerDescription = beerDescriptionService.createBeerDescription(beerDescription);
 
-
-
-        dto.setSubstyle(savedSubstyle);
-        dto.setBrand(savedBrand);
+        dto.setSubstyle(result.savedSubstyle());
+        dto.setBrand(result.savedBrand());
         if (dto.getSellingPrice() == null) {
             dto.setSellingPrice(dto.getPurchasePrice().multiply(BigDecimal.valueOf(2)));
         }
@@ -75,6 +62,25 @@ public class BeerService {
 
     }
 
+    private Result checkFieldsDisctinction(Beer dto) {
+        Substyle savedSubstyle = substyleService.getSubstyleByName(dto.getSubstyle().getName()).orElseGet(() -> {
+            Substyle substyle = new Substyle();
+            substyle.setName(dto.getSubstyle().getName());
+            substyle.setStyle(dto.getStyle());
+            return substyleService.createSubstyle(substyle);
+        });
+
+        Brand savedBrand = brandService.getBrandByName(dto.getBrand().getName()).orElseGet(() -> {
+            Brand brand = new Brand();
+            brand.setName(dto.getBrand().getName());
+            return brandService.createBrand(brand);
+        });
+        return new Result(savedSubstyle, savedBrand);
+    }
+
+    private record Result(Substyle savedSubstyle, Brand savedBrand) {
+    }
+
     public List<Beer> getAllBeers() {
         List<Beer> beerList = beerRepository.findAll();
 
@@ -88,10 +94,10 @@ public class BeerService {
         return beer;
     }
 
-    public void updateBeer(Beer beer) {
+    public Beer updateBeer(Beer beer) {
         beer.generateCode();
 
-        beerRepository.save(beer);
+        return beerRepository.save(beer);
     }
 
     public void removeBeer(Beer beer) {

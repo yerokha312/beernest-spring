@@ -45,10 +45,9 @@ public class AdminBeerController {
     }
 
     @PutMapping("/")
-    public ResponseEntity<String> updateBeer(@RequestBody Beer beer) {
-        beerService.updateBeer(beer);
+    public Beer updateBeer(@RequestBody Beer beer) {
+        return beerService.updateBeer(beer);
 
-        return new ResponseEntity<>("Resource updated successfully", HttpStatus.valueOf(204));
     }
 
     @DeleteMapping("/")

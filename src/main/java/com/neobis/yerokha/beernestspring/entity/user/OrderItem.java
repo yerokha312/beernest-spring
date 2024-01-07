@@ -15,7 +15,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "order_item")
-public class OrderLine {
+public class OrderItem {
 
     @Id
     @Column(name = "order_item_id")
