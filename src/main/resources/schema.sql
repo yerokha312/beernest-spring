@@ -28,6 +28,22 @@ CREATE TABLE customer
     UNIQUE (phone)
 );
 
+CREATE TABLE employee
+(
+    id         bigserial,
+    first_name varchar(255),
+    last_name  varchar(255),
+    dob        date,
+    authority  varchar(255),
+    email      varchar(255),
+    phone      varchar(255),
+    password   varchar(255),
+    active     boolean DEFAULT TRUE,
+    PRIMARY KEY (id),
+    UNIQUE (email),
+    UNIQUE (phone)
+);
+
 
 CREATE TABLE orders
 (

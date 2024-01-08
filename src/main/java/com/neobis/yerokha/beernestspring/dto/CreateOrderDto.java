@@ -1,21 +1,22 @@
 package com.neobis.yerokha.beernestspring.dto;
 
-import com.neobis.yerokha.beernestspring.entity.beer.Beer;
-import com.neobis.yerokha.beernestspring.entity.user.Customer;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class OrderDto {
+public class CreateOrderDto {
 
     private Long customerId;
     private List<OrderItemDto> orderItemDtos;
 
     @Data
-    public class OrderItemDto {
+    public static class OrderItemDto {
 
-        private Beer beer;
+        private Long beerId;
         private Integer quantity;
+
+        public OrderItemDto() {
+        }
     }
 }

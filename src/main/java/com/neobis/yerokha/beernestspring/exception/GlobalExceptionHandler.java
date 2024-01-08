@@ -28,4 +28,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
     }
 
+    @ExceptionHandler({OrderDoesNotExistException.class})
+    public ResponseEntity<String> handleOrderDoesNotExist(OrderDoesNotExistException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
 }

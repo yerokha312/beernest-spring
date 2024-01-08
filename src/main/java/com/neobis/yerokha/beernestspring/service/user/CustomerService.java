@@ -20,6 +20,7 @@ public class CustomerService {
 
     public Customer createCustomer(CreateCustomerDto dto) {
         Customer customer = CustomerMapper.mapToCustomerEntity(dto);
+
         try {
             return customerRepository.save(customer);
         } catch (Exception e) {
@@ -32,9 +33,10 @@ public class CustomerService {
                 new CustomerDoesNotExistException("Customer with provided email address does not exist"));
 
         return customer;
+
     }
 
-    public Customer updateCustomer(Customer customer) {
+    public Customer updateCustomerPhoneNumber(Customer customer) {
         try {
             return customerRepository.save(customer);
         } catch (Exception e) {

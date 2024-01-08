@@ -30,7 +30,7 @@ public class Brand {
 //    @JsonManagedReference
     @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    private static Set<Beer> beerSet;
+    private Set<Beer> beerSet = new HashSet<>();
 
     public void addBeer(Beer beer) {
         if (beerSet == null) {

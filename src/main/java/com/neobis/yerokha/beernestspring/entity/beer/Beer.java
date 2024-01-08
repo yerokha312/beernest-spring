@@ -41,12 +41,10 @@ public class Beer {
     private Style style;
 
     @ManyToOne
-//    @JsonBackReference
     @JoinColumn(name = "substyle_id")
     private Substyle substyle;
 
     @ManyToOne
-//    @JsonBackReference
     @JoinColumn(name = "brand_id")
     private Brand brand;
 

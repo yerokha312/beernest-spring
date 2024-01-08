@@ -1,18 +1,22 @@
 package com.neobis.yerokha.beernestspring.service.user;
 
-import com.neobis.yerokha.beernestspring.dto.OrderDto;
+import com.neobis.yerokha.beernestspring.dto.CreateOrderDto;
 import com.neobis.yerokha.beernestspring.entity.beer.Beer;
 import com.neobis.yerokha.beernestspring.entity.user.Customer;
 import com.neobis.yerokha.beernestspring.entity.user.Order;
 import com.neobis.yerokha.beernestspring.entity.user.OrderItem;
 import com.neobis.yerokha.beernestspring.exception.CustomerDoesNotExistException;
+import com.neobis.yerokha.beernestspring.exception.OrderDoesNotExistException;
 import com.neobis.yerokha.beernestspring.repository.user.CustomerRepository;
 import com.neobis.yerokha.beernestspring.repository.user.OrderRepository;
 import com.neobis.yerokha.beernestspring.service.beer.BeerService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 public class OrderService {
@@ -21,24 +25,28 @@ public class OrderService {
     private final BeerService beerService;
     private final CustomerRepository customerRepository;
 
+    public static final int PAGE_SIZE = 10;
+
     public OrderService(OrderRepository orderRepository, BeerService beerService, CustomerRepository customerRepository) {
         this.orderRepository = orderRepository;
         this.beerService = beerService;
         this.customerRepository = customerRepository;
     }
 
-    public Order createOrder(OrderDto dto) {
+    public Order createOrder(CreateOrderDto dto) {
         Order order = new Order();
 
         Customer customer = customerRepository.
                 findById(dto.getCustomerId()).orElseThrow(() ->
                         new CustomerDoesNotExistException("This customer does not exist"));
-        order.setCustomer(customer);
-        order.setCreationDate(Date.valueOf(LocalDate.now()));
 
-        for (OrderDto.OrderItemDto orderItemDto : dto.getOrderItemDtos()) {
-            Beer beer = beerService.getBeerById(orderItemDto.getBeer().getId());
+        order.setCustomer(customer);
+        order.setCreationDate(LocalDateTime.now());
+
+        for (CreateOrderDto.OrderItemDto orderItemDto : dto.getOrderItemDtos()) {
+            Beer beer = beerService.getBeerById(orderItemDto.getBeerId());
             OrderItem orderItem = new OrderItem();
+            orderItem.setOrder(order);
             orderItem.setBeer(beer);
             orderItem.setQuantity(orderItemDto.getQuantity());
             order.addOrderItem(orderItem);
@@ -47,5 +55,18 @@ public class OrderService {
         order.calculateTotalPrice();
 
         return orderRepository.save(order);
+    }
+
+    public Page<Order> getAllOrders(Pageable pageable) {
+        return orderRepository.findAll(pageable);
+    }
+
+    public Page<Order> getAllOrdersByCustomerId(Long customerId, Pageable pageable) {
+        return orderRepository.findAllByCustomerId(customerId, pageable);
+    }
+
+    public Order getOrderById(Long orderId) {
+        return orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderDoesNotExistException("Order with id: " + orderId + " not found."));
     }
 }

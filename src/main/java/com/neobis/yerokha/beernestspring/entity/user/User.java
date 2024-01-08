@@ -59,8 +59,7 @@ public abstract class User {
                 ", birthDate=" + birthDate +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+                ", password='" + password + '\'';
     }
 
 }

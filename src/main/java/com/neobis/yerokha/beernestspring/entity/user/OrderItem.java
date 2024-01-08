@@ -1,5 +1,6 @@
 package com.neobis.yerokha.beernestspring.entity.user;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.neobis.yerokha.beernestspring.entity.beer.Beer;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,6 +25,7 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
+    @JsonBackReference
     private Order order;
 
     @OneToOne

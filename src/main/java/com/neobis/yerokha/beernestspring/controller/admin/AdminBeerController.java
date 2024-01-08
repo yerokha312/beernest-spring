@@ -30,8 +30,8 @@ public class AdminBeerController {
 
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createBeer(@RequestBody Beer beer) {
-        beerService.createBeer(beer);
+    public Beer createBeer(@RequestBody Beer beer) {
+        return beerService.createBeer(beer);
     }
 
     @GetMapping("/")
@@ -53,6 +53,6 @@ public class AdminBeerController {
     public ResponseEntity<String> deleteBeer(@PathVariable Long id) {
         beerService.deleteBeerById(id);
 
-        return new ResponseEntity<>("Resource removed successfully", HttpStatus.valueOf(204));
+        return new ResponseEntity<>("Resource removed successfully", HttpStatus.OK);
     }
 }
