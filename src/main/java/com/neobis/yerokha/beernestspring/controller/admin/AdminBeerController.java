@@ -47,13 +47,12 @@ public class AdminBeerController {
     @PutMapping("/")
     public Beer updateBeer(@RequestBody Beer beer) {
         return beerService.updateBeer(beer);
-
     }
 
-    @DeleteMapping("/")
-    public ResponseEntity<String> deleteBeer(@RequestBody Beer beer) {
-        beerService.removeBeer(beer);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteBeer(@PathVariable Long id) {
+        beerService.deleteBeerById(id);
 
-        return new ResponseEntity<>("Resource removed successfully", HttpStatus.valueOf(202));
+        return new ResponseEntity<>("Resource removed successfully", HttpStatus.valueOf(204));
     }
 }

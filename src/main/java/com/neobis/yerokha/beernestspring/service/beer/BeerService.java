@@ -82,16 +82,14 @@ public class BeerService {
     }
 
     public List<Beer> getAllBeers() {
-        List<Beer> beerList = beerRepository.findAll();
 
-        return beerList;
+        return beerRepository.findAll();
     }
 
     public Beer getBeerById(Long id) {
-        Beer beer = beerRepository.findById(id)
-                .orElseThrow(() -> new BeerDoesNotExistException("Beer not found with id: " + id));
 
-        return beer;
+        return beerRepository.findById(id)
+                .orElseThrow(() -> new BeerDoesNotExistException("Beer not found with id: " + id));
     }
 
     public Beer updateBeer(Beer beer) {
@@ -100,8 +98,8 @@ public class BeerService {
         return beerRepository.save(beer);
     }
 
-    public void removeBeer(Beer beer) {
-        beerRepository.delete(beer);
+    public void deleteBeerById(Long id) {
+        beerRepository.deleteById(id);
     }
 }
 /*
