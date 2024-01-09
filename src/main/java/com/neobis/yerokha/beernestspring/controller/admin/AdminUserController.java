@@ -29,14 +29,14 @@ public class AdminUserController {
         return userService.getAllCustomerDtos(Pageable.ofSize(PAGE_SIZE));
     }
 
-    @GetMapping("/{id}")
-    public CustomerDto getOneCustomer(@PathVariable Long id) {
-        return userService.getCustomerDtoById(id);
+    @GetMapping("/{customerId}")
+    public CustomerDto getOneCustomer(@PathVariable Long customerId) {
+        return userService.getCustomerDtoById(customerId);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCustomer(@PathVariable Long id) {
-        userService.deleteCustomerById(id);
+    @DeleteMapping("/{customerId}")
+    public ResponseEntity<String> deleteCustomer(@PathVariable Long customerId) {
+        userService.deleteCustomerById(customerId);
 
         return new ResponseEntity<>("Customer successfully deleted", HttpStatus.OK);
     }

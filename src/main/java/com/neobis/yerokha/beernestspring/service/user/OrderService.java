@@ -6,8 +6,10 @@ import com.neobis.yerokha.beernestspring.entity.beer.Beer;
 import com.neobis.yerokha.beernestspring.entity.user.Customer;
 import com.neobis.yerokha.beernestspring.entity.user.Order;
 import com.neobis.yerokha.beernestspring.entity.user.OrderItem;
+import com.neobis.yerokha.beernestspring.enums.Status;
 import com.neobis.yerokha.beernestspring.exception.CustomerDoesNotExistException;
 import com.neobis.yerokha.beernestspring.exception.OrderDoesNotExistException;
+import com.neobis.yerokha.beernestspring.exception.UnableToCancelException;
 import com.neobis.yerokha.beernestspring.repository.user.CustomerRepository;
 import com.neobis.yerokha.beernestspring.repository.user.OrderRepository;
 import com.neobis.yerokha.beernestspring.service.beer.BeerService;
@@ -69,5 +71,18 @@ public class OrderService {
     public OrderDto getOrderById(Long orderId) {
         return OrderMapper.mapOrderToDto(orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderDoesNotExistException("Order with id: " + orderId + " not found.")));
+    }
+
+    public void cancelOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderDoesNotExistException("Order with id: " + orderId + " not found."));
+
+        if (order.getIsDelivered()) {
+            throw new UnableToCancelException("Order is already delivered, try to return order instead");
+        }
+
+        order.setStatus(Status.CANCELED);
+
+        orderRepository.save(order);
     }
 }

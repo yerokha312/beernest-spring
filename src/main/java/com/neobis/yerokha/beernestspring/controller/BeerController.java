@@ -29,10 +29,10 @@ public class BeerController {
 
     }
 
-    @GetMapping("/{id}")
-    public BeerDto getBeerById(@PathVariable Long id) {
+    @GetMapping("/{beerId}")
+    public BeerDto getBeerById(@PathVariable Long beerId) {
 
-        return beerService.getBeerDtoById(id);
+        return beerService.getBeerDtoById(beerId);
 
     }
 }

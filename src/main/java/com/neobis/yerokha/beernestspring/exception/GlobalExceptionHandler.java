@@ -42,4 +42,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleInvalidPassword(InvalidPasswordException exception) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
     }
+
+    @ExceptionHandler({UnableToCancelException.class})
+    public ResponseEntity<String> handleUnableToCancel(UnableToCancelException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(exception.getMessage());
+    }
 }

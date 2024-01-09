@@ -39,9 +39,9 @@ public class AdminBeerController {
         return beerService.getAllBeers();
     }
 
-    @GetMapping("/{id}")
-    public Beer getBeerById(@PathVariable Long id) {
-        return beerService.getBeerById(id);
+    @GetMapping("/{beerId}")
+    public Beer getBeerById(@PathVariable Long beerId) {
+        return beerService.getBeerById(beerId);
     }
 
     @PutMapping("/")
@@ -49,9 +49,9 @@ public class AdminBeerController {
         return beerService.updateBeer(beer);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteBeer(@PathVariable Long id) {
-        beerService.deleteBeerById(id);
+    @DeleteMapping("/{beerId}")
+    public ResponseEntity<String> deleteBeer(@PathVariable Long beerId) {
+        beerService.deleteBeerById(beerId);
 
         return new ResponseEntity<>("Resource removed successfully", HttpStatus.OK);
     }
