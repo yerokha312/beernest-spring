@@ -1,6 +1,7 @@
 package com.neobis.yerokha.beernestspring.service.user;
 
 import com.neobis.yerokha.beernestspring.dto.CreateOrderDto;
+import com.neobis.yerokha.beernestspring.dto.OrderDto;
 import com.neobis.yerokha.beernestspring.entity.beer.Beer;
 import com.neobis.yerokha.beernestspring.entity.user.Customer;
 import com.neobis.yerokha.beernestspring.entity.user.Order;
@@ -10,6 +11,7 @@ import com.neobis.yerokha.beernestspring.exception.OrderDoesNotExistException;
 import com.neobis.yerokha.beernestspring.repository.user.CustomerRepository;
 import com.neobis.yerokha.beernestspring.repository.user.OrderRepository;
 import com.neobis.yerokha.beernestspring.service.beer.BeerService;
+import com.neobis.yerokha.beernestspring.util.OrderMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -40,6 +42,7 @@ public class OrderService {
 
         order.setCustomer(customer);
         order.setCreationDateTime(LocalDateTime.now());
+        order.setContactInfo(dto.getContactInfo());
 
         for (CreateOrderDto.OrderItemDto orderItemDto : dto.getOrderItemDtos()) {
             Beer beer = beerService.getBeerById(orderItemDto.getBeerId());
@@ -55,20 +58,16 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    public Page<Order> getAllOrders(Pageable pageable) {
-        return orderRepository.findAll(pageable);
-    }
-
-    public Page<Order> getAllOrdersByCustomerId(Long customerId, Pageable pageable) {
+    public Page<OrderDto> getAllOrdersByCustomerId(Long customerId, Pageable pageable) {
         try {
-            return orderRepository.findAllByCustomerId(customerId, pageable);
+            return orderRepository.findAllByCustomerId(customerId, pageable).map(OrderMapper::mapOrderToDto);
         } catch (Exception e) {
             throw new CustomerDoesNotExistException("Customer with id: " + customerId + " not found");
         }
     }
 
-    public Order getOrderById(Long orderId) {
-        return orderRepository.findById(orderId)
-                .orElseThrow(() -> new OrderDoesNotExistException("Order with id: " + orderId + " not found."));
+    public OrderDto getOrderById(Long orderId) {
+        return OrderMapper.mapOrderToDto(orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderDoesNotExistException("Order with id: " + orderId + " not found.")));
     }
 }

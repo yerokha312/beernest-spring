@@ -24,9 +24,9 @@ public class OrderDto {
     @Data
     public static class OrderItemDto {
 
-        private OrderItemBeerDto dto;
-        private Integer quantity;
+        private OrderItemBeerDto beerDto;
         private BigDecimal price;
+        private Integer quantity;
 
         public OrderItemDto() {
         }

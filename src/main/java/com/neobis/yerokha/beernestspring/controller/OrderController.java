@@ -1,8 +1,11 @@
 package com.neobis.yerokha.beernestspring.controller;
 
 import com.neobis.yerokha.beernestspring.dto.CreateOrderDto;
+import com.neobis.yerokha.beernestspring.dto.OrderDto;
 import com.neobis.yerokha.beernestspring.entity.user.Order;
+import com.neobis.yerokha.beernestspring.service.user.ContactsService;
 import com.neobis.yerokha.beernestspring.service.user.OrderService;
+import com.neobis.yerokha.beernestspring.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,16 +35,17 @@ public class OrderController {
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
     public Order createOrder(@RequestBody CreateOrderDto dto) {
+
         return orderService.createOrder(dto);
     }
 
     @GetMapping("/")
-    public Page<Order> getAllOrdersByCustomerId(@RequestParam(name = "customerId") Long customerId) {
+    public Page<OrderDto> getAllOrdersByCustomerId(@RequestParam(name = "customerId") Long customerId) {
         return orderService.getAllOrdersByCustomerId(customerId, Pageable.ofSize(PAGE_SIZE));
     }
 
     @GetMapping("/{id}")
-    public Order getOrderById(@PathVariable Long id) {
+    public OrderDto getOrderById(@PathVariable Long id) {
         return orderService.getOrderById(id);
     }
 }
