@@ -9,7 +9,8 @@ import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
@@ -24,13 +25,13 @@ public abstract class User {
     @Column(name = "last_name")
     private String lastName;
     @Column(name = "dob")
-    private Date birthDate;
+    private LocalDate birthDate;
     @Column(name = "email", unique = true)
     private String email;
-    @Column(name = "phone", unique = true)
-    private String phoneNumber;
     @Column(name = "password")
     private String password;
+    @Column(name = "reg_date")
+    private LocalDateTime registrationTime;
     @Column(name = "active")
     private Boolean isActive;
 
@@ -58,7 +59,6 @@ public abstract class User {
                 ", lastName='" + lastName + '\'' +
                 ", birthDate=" + birthDate +
                 ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
                 ", password='" + password + '\'';
     }
 

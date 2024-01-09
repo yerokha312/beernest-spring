@@ -3,9 +3,12 @@ package com.neobis.yerokha.beernestspring.entity.user;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.neobis.yerokha.beernestspring.enums.Status;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -36,18 +40,26 @@ public class Order {
     @Column(name = "creation_date")
     @Temporal(TemporalType.TIMESTAMP)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
-    private LocalDateTime creationDate;
+    private LocalDateTime creationDateTime;
 
     @Column(name = "total_price")
     private BigDecimal totalPrice;
 
     @Column(name = "status")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
     @JsonBackReference
     private Customer customer;
+
+    @OneToOne
+    @JoinColumn(name = "address_id")
+    private ContactInfo contactInfo;
+
+    @Column(name = "delivered")
+    private Boolean isDelivered;
 
     @OneToMany(mappedBy = "order",
             fetch = FetchType.EAGER,

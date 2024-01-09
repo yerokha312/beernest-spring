@@ -1,6 +1,5 @@
 package com.neobis.yerokha.beernestspring.entity.beer;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.neobis.yerokha.beernestspring.enums.Container;
 import com.neobis.yerokha.beernestspring.enums.Style;
 import jakarta.persistence.CascadeType;

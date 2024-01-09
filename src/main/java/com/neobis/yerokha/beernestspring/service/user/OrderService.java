@@ -14,8 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -41,7 +39,7 @@ public class OrderService {
                         new CustomerDoesNotExistException("This customer does not exist"));
 
         order.setCustomer(customer);
-        order.setCreationDate(LocalDateTime.now());
+        order.setCreationDateTime(LocalDateTime.now());
 
         for (CreateOrderDto.OrderItemDto orderItemDto : dto.getOrderItemDtos()) {
             Beer beer = beerService.getBeerById(orderItemDto.getBeerId());
@@ -62,7 +60,11 @@ public class OrderService {
     }
 
     public Page<Order> getAllOrdersByCustomerId(Long customerId, Pageable pageable) {
-        return orderRepository.findAllByCustomerId(customerId, pageable);
+        try {
+            return orderRepository.findAllByCustomerId(customerId, pageable);
+        } catch (Exception e) {
+            throw new CustomerDoesNotExistException("Customer with id: " + customerId + " not found");
+        }
     }
 
     public Order getOrderById(Long orderId) {

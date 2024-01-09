@@ -27,7 +27,7 @@ public class Brand {
     @Column(name = "name", unique = true)
     private String name;
 
-//    @JsonManagedReference
+    //    @JsonManagedReference
     @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Set<Beer> beerSet = new HashSet<>();

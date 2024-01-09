@@ -11,7 +11,8 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "employee")
-@Getter @Setter
+@Getter
+@Setter
 public class Employee extends User {
 
     @Enumerated(EnumType.STRING)
