@@ -10,6 +10,7 @@ import com.neobis.yerokha.beernestspring.enums.Status;
 import com.neobis.yerokha.beernestspring.exception.CustomerDoesNotExistException;
 import com.neobis.yerokha.beernestspring.exception.OrderDoesNotExistException;
 import com.neobis.yerokha.beernestspring.exception.UnableToCancelException;
+import com.neobis.yerokha.beernestspring.exception.OutOfStockException;
 import com.neobis.yerokha.beernestspring.repository.user.CustomerRepository;
 import com.neobis.yerokha.beernestspring.repository.user.OrderRepository;
 import com.neobis.yerokha.beernestspring.service.beer.BeerService;
@@ -53,12 +54,33 @@ public class OrderService {
             orderItem.setBeer(beer);
             orderItem.setQuantity(orderItemDto.getQuantity());
             order.addOrderItem(orderItem);
+
+            updateBeerStock(orderItemDto, beer);
         }
 
         order.calculateTotalPrice();
 
         return OrderMapper.mapOrderToDto(orderRepository.save(order));
     }
+
+    private void updateBeerStock(CreateOrderDto.OrderItemDto orderItem, Beer beer) {
+
+        int quantityToSubtract = orderItem.getQuantity();
+
+        if(beer.getStockAmount() < quantityToSubtract) {
+            throw new OutOfStockException("Ordered quantity exceeds available stock");
+        }
+
+        int updatedStock = beer.getStockAmount() - quantityToSubtract;
+        beer.setStockAmount(updatedStock);
+
+        long updatedSold = beer.getSoldAmount() + quantityToSubtract;
+        beer.setSoldAmount(updatedSold);
+
+        beerService.updateBeer(beer);
+
+    }
+
 
     public Page<OrderDto> getAllOrdersByCustomerId(Long customerId, Pageable pageable) {
         try {

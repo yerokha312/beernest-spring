@@ -47,4 +47,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleUnableToCancel(UnableToCancelException exception) {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(exception.getMessage());
     }
+
+    @ExceptionHandler({OutOfStockException.class})
+    public ResponseEntity<String> handleInsufficientBeerAmount(OutOfStockException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(exception.getMessage());
+    }
 }
