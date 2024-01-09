@@ -56,3 +56,32 @@ public class AdminBeerController {
         return new ResponseEntity<>("Resource removed successfully", HttpStatus.OK);
     }
 }
+
+/*
+ * AdminBeerController provides REST endpoints for managing beers.
+ *
+ * @author yerbolat
+ * @version 1.0
+ *
+ * @RestController - Indicates this as a REST controller.
+ * @RequestMapping - Maps URL path /api/admin/beers.
+ *
+ * @PostMapping - Handles POST request to create a new beer.
+ * @RequestBody Beer beer - Beer object to create, passed in request body.
+ * @ResponseStatus(HttpStatus.CREATED) - Returns 201 status code.
+ *
+ * @GetMapping - Handles GET for all beers.
+ * Returns List<Beer> of all beers.
+ *
+ * @GetMapping("/{beerId}") - Handles GET for single beer by id.
+ * @PathVariable Long beerId - Beer id passed as path variable.
+ * Returns Beer object with matching id.
+ *
+ * @PutMapping - Handles PUT to update existing beer.
+ * @RequestBody Beer beer - Updated Beer object passed in request body.
+ *
+ * @DeleteMapping("/{beerId}") - Handles DELETE beer by id.
+ * @PathVariable Long beerId - Beer id passed as path variable.
+ * Returns HTTP 200 status with success message.
+ */
+

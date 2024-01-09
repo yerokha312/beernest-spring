@@ -36,6 +36,7 @@ public abstract class User {
     private Boolean isActive;
 
     public User() {
+        isActive = true;
     }
 
     @Override

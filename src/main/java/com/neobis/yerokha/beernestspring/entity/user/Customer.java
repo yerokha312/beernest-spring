@@ -12,7 +12,9 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "customer")
@@ -30,9 +32,10 @@ public class Customer extends User {
             joinColumns = @JoinColumn(name = "customer_id"),
             inverseJoinColumns = @JoinColumn(name = "contact_info_id")
     )
-    private List<ContactInfo> contactInfo;
+    private Set<ContactInfo> contactInfo;
 
     public Customer() {
+        contactInfo = new HashSet<>();
     }
 
     @Override

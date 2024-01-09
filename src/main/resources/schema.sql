@@ -1,3 +1,9 @@
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
+
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO public;
+
 create table beer_description
 (
     beer_description_id bigserial,
@@ -72,7 +78,6 @@ create table orders
     address_id    bigint,
     delivered     boolean      default false,
     primary key (order_id),
-    unique (address_id),
     constraint fk63wqm7yt0l4sbsp24r6rgqgig
         foreign key (address_id) references contact_info,
     constraint fk624gtjin3po807j3vix093tlf
@@ -134,7 +139,6 @@ create table order_item
     beer_id       bigint,
     quantity      integer,
     primary key (order_item_id),
-    unique (beer_id),
     constraint fke6tx11auahxtxajs3kal2c42
         foreign key (beer_id) references beer,
     constraint fkt4dc2r9nbvbujrljv3e23iibt

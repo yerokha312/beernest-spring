@@ -67,6 +67,10 @@ public class Order {
     @JsonManagedReference
     private List<OrderItem> orderItems;
 
+    public Order() {
+        orderItems = new ArrayList<>();
+    }
+
     public void addOrderItem(OrderItem orderItem) {
         if (orderItems == null) {
             orderItems = new ArrayList<>();

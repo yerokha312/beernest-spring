@@ -35,7 +35,7 @@ public class OrderService {
         this.customerRepository = customerRepository;
     }
 
-    public Order createOrder(CreateOrderDto dto) {
+    public OrderDto createOrder(CreateOrderDto dto) {
         Order order = new Order();
 
         Customer customer = customerRepository.
@@ -57,7 +57,7 @@ public class OrderService {
 
         order.calculateTotalPrice();
 
-        return orderRepository.save(order);
+        return OrderMapper.mapOrderToDto(orderRepository.save(order));
     }
 
     public Page<OrderDto> getAllOrdersByCustomerId(Long customerId, Pageable pageable) {

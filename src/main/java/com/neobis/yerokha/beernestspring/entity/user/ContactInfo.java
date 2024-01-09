@@ -10,6 +10,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -31,4 +32,8 @@ public class ContactInfo {
     @ManyToMany(mappedBy = "contactInfo")
     @JsonIgnore
     private Set<Customer> customers;
+
+    public ContactInfo() {
+        customers = new HashSet<>();
+    }
 }

@@ -2,7 +2,6 @@ package com.neobis.yerokha.beernestspring.controller;
 
 import com.neobis.yerokha.beernestspring.dto.CreateOrderDto;
 import com.neobis.yerokha.beernestspring.dto.OrderDto;
-import com.neobis.yerokha.beernestspring.entity.user.Order;
 import com.neobis.yerokha.beernestspring.service.user.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import static com.neobis.yerokha.beernestspring.service.user.OrderService.PAGE_SIZE;
 
 @RestController
-@RequestMapping("/api/v1/orders")
+@RequestMapping("/v1/orders")
 public class OrderController {
 
     private final OrderService orderService;
@@ -34,7 +33,7 @@ public class OrderController {
 
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
-    public Order createOrder(@RequestBody CreateOrderDto dto) {
+    public OrderDto createOrder(@RequestBody CreateOrderDto dto) {
 
         return orderService.createOrder(dto);
     }
