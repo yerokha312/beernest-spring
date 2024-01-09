@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v8/beers")
+@RequestMapping("/api/admin/beers")
 public class AdminBeerController {
 
     private final BeerService beerService;

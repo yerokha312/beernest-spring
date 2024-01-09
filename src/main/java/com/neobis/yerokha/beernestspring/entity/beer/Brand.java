@@ -32,10 +32,4 @@ public class Brand {
             cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Set<Beer> beerSet = new HashSet<>();
 
-    public void addBeer(Beer beer) {
-        if (beerSet == null) {
-            beerSet = new HashSet<>();
-        }
-        beerSet.add(beer);
-    }
 }

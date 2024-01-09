@@ -5,9 +5,8 @@ import com.neobis.yerokha.beernestspring.entity.user.ContactInfo;
 import com.neobis.yerokha.beernestspring.service.user.ContactsService;
 import com.neobis.yerokha.beernestspring.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +17,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
-import static com.neobis.yerokha.beernestspring.service.user.UserService.PAGE_SIZE;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -39,11 +38,6 @@ public class UserController {
         return userService.getCustomerDtoById(id);
     }
 
-    @GetMapping("/")
-    public Page<CustomerDto> getAllCustomers() {
-        return userService.getAllCustomerDtos(Pageable.ofSize(PAGE_SIZE));
-    }
-
     @PutMapping("/")
     public CustomerDto updateCustomer(@RequestBody CustomerDto customerDto) {
         return userService.updateCustomer(customerDto);
@@ -56,12 +50,26 @@ public class UserController {
     }
 
     @GetMapping("/{id}/contacts")
-    private List<ContactInfo> getContacts(@PathVariable Long id) {
+    public List<ContactInfo> getContacts(@PathVariable Long id) {
         return contactsService.getContacts(id);
     }
 
     @GetMapping("/{customerId}/contacts/{id}")
-    private ContactInfo getContactInfo(@PathVariable Long customerId, @PathVariable Long id) {
+    public ContactInfo getContactInfo(@PathVariable Long customerId, @PathVariable Long id) {
         return contactsService.getOneContact(customerId, id);
+    }
+
+    @PutMapping("/delete")
+    public ResponseEntity<String> deleteAccount(@RequestBody Map<String, String> body) {
+        userService.setActiveFalse(body);
+
+        return new ResponseEntity<>("Your account successfully deleted", HttpStatus.OK);
+    }
+
+    @PutMapping("/restoreAccount")
+    public ResponseEntity<String> restoreAccount(@RequestBody Map<String, String> body) {
+        userService.setActiveTrue(body);
+
+        return new ResponseEntity<>("Your account successfully restored", HttpStatus.OK);
     }
 }

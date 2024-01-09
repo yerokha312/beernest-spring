@@ -8,7 +8,5 @@ import java.util.Optional;
 
 public interface BeerRepository extends JpaRepository<Beer, Long> {
 
-    Optional<Beer> findBeerByName(String name);
-
     Optional<Beer> findByBeerCode(String code);
 }
