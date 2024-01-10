@@ -30,7 +30,9 @@ public class OrderService {
 
     public static final int PAGE_SIZE = 10;
 
-    public OrderService(OrderRepository orderRepository, BeerService beerService, CustomerRepository customerRepository) {
+    public OrderService(OrderRepository orderRepository,
+                        BeerService beerService,
+                        CustomerRepository customerRepository) {
         this.orderRepository = orderRepository;
         this.beerService = beerService;
         this.customerRepository = customerRepository;
