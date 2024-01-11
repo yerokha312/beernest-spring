@@ -24,13 +24,12 @@ public class CustomerAuthenticationController {
     public Customer registerCustomer(@RequestBody CreateCustomerDto dto) {
         return userService.createCustomer(dto);
     }
-/*
-
-    @PostMapping("/login")
-    public LoginResponse login(@RequestBody LinkedHashMap<String, String> body) {
-        String email = body.get("email");
-        String password = body.get("password");
-        return new LoginResponse;
-
-    }*/
+//
+//    @PostMapping("/login")
+//    public LoginResponse login(@RequestBody LinkedHashMap<String, String> body) {
+//        String email = body.get("email");
+//        String password = body.get("password");
+//        return new LoginResponse;
+//
+//    }
 }
