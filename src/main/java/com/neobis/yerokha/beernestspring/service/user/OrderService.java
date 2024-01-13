@@ -61,6 +61,8 @@ public class OrderService {
         }
 
         order.calculateTotalPrice();
+        order.setStatus(Status.PENDING);
+        order.setIsDelivered(false);
 
         return OrderMapper.mapOrderToDto(orderRepository.save(order));
     }
