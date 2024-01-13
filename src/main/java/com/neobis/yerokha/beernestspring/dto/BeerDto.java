@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public record BeerDto(Long id,
                       String name,
                       String style,
-                      String substyle,
+                      String subStyle,
                       String brand,
                       Double alcohol,
                       String container,

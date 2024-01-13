@@ -13,7 +13,6 @@ public class CustomerMapper {
         entity.setLastName(dto.lastName());
         entity.setBirthDate(dto.dob());
         entity.setEmail(dto.email());
-        entity.setPassword(dto.password());
 
         return entity;
     }

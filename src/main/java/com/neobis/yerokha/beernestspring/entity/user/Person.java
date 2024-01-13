@@ -16,9 +16,10 @@ import java.util.Objects;
 @Getter
 @Setter
 @MappedSuperclass
-public abstract class User {
+public abstract class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
     @Column(name = "first_name")
     private String firstName;
@@ -35,7 +36,7 @@ public abstract class User {
     @Column(name = "active")
     private Boolean isActive;
 
-    public User() {
+    public Person() {
         isActive = true;
     }
 
@@ -43,9 +44,9 @@ public abstract class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) &&
-                Objects.equals(birthDate, user.birthDate);
+        Person person = (Person) o;
+        return Objects.equals(firstName, person.firstName) && Objects.equals(lastName, person.lastName) &&
+                Objects.equals(birthDate, person.birthDate);
     }
 
     @Override

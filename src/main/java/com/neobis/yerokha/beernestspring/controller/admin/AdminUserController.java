@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import static com.neobis.yerokha.beernestspring.service.user.UserService.PAGE_SIZE;
 
 @RestController
-@RequestMapping("/api/admin/users")
+@RequestMapping("/v1/admin/users")
 public class AdminUserController {
 
     private final UserService userService;

@@ -40,8 +40,8 @@ public class Beer {
     private Style style;
 
     @ManyToOne
-    @JoinColumn(name = "substyle_id")
-    private Substyle substyle;
+    @JoinColumn(name = "sub_style_id")
+    private SubStyle subStyle;
 
     @ManyToOne
     @JoinColumn(name = "brand_id")
@@ -71,10 +71,10 @@ public class Beer {
     private BeerDescription beerDescription;
 
     @Column(name = "sold_amount")
-    private Long soldAmount;
+    private long soldAmount;
 
     @Column(name = "stock_amount")
-    private Integer stockAmount;
+    private int stockAmount;
 
     public void generateCode() {
         StringBuilder builder = new StringBuilder();
@@ -84,7 +84,7 @@ public class Beer {
                 .append(style.toString(), 0, 1)
                 .append("-");
 
-        String[] subArray = substyle.getName().split(" ");
+        String[] subArray = subStyle.getName().split(" ");
         for (String s : subArray) {
             builder.append(s.charAt(0));
         }
@@ -105,13 +105,13 @@ public class Beer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Beer beer = (Beer) o;
-        return Objects.equals(name, beer.name) && style == beer.style && Objects.equals(substyle, beer.substyle) &&
+        return Objects.equals(name, beer.name) && style == beer.style && Objects.equals(subStyle, beer.subStyle) &&
                 Objects.equals(brand, beer.brand) && Objects.equals(alcohol, beer.alcohol) &&
                 container == beer.container && Objects.equals(size, beer.size) && Objects.equals(country, beer.country);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, style, substyle, brand, alcohol, container, size, country);
+        return Objects.hash(name, style, subStyle, brand, alcohol, container, size, country);
     }
 }

@@ -13,11 +13,11 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "substyle")
-public class Substyle {
+@Table(name = "sub_style")
+public class SubStyle {
 
     @Id
-    @Column(name = "substyle_id")
+    @Column(name = "sub_style_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

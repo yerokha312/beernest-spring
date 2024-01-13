@@ -18,8 +18,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
     }
 
-    @ExceptionHandler({CustomerDoesNotExistException.class})
-    public ResponseEntity<String> handleCustomerDoesNotExist(CustomerDoesNotExistException exception) {
+    @ExceptionHandler({UserDoesNotExistException.class})
+    public ResponseEntity<String> handleCustomerDoesNotExist(UserDoesNotExistException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 

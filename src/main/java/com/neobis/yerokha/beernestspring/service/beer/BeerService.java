@@ -4,7 +4,7 @@ import com.neobis.yerokha.beernestspring.dto.BeerDto;
 import com.neobis.yerokha.beernestspring.entity.beer.Beer;
 import com.neobis.yerokha.beernestspring.entity.beer.BeerDescription;
 import com.neobis.yerokha.beernestspring.entity.beer.Brand;
-import com.neobis.yerokha.beernestspring.entity.beer.Substyle;
+import com.neobis.yerokha.beernestspring.entity.beer.SubStyle;
 import com.neobis.yerokha.beernestspring.exception.BeerDoesNotExistException;
 import com.neobis.yerokha.beernestspring.repository.beer.BeerRepository;
 import com.neobis.yerokha.beernestspring.util.BeerMapper;
@@ -24,14 +24,14 @@ public class BeerService {
     private final BeerRepository beerRepository;
     private final BeerDescriptionService beerDescriptionService;
     private final BrandService brandService;
-    private final SubstyleService substyleService;
+    private final SubStyleService subStyleService;
 
     @Autowired
-    public BeerService(BeerRepository beerRepository, BeerDescriptionService beerDescriptionService, BrandService brandService, SubstyleService substyleService) {
+    public BeerService(BeerRepository beerRepository, BeerDescriptionService beerDescriptionService, BrandService brandService, SubStyleService subStyleService) {
         this.beerRepository = beerRepository;
         this.beerDescriptionService = beerDescriptionService;
         this.brandService = brandService;
-        this.substyleService = substyleService;
+        this.subStyleService = subStyleService;
     }
 
     public Beer createBeer(Beer dto) {
@@ -41,7 +41,7 @@ public class BeerService {
         beerDescription.setDescription(dto.getBeerDescription().getDescription());
         BeerDescription savedBeerDescription = beerDescriptionService.createBeerDescription(beerDescription);
 
-        dto.setSubstyle(result.savedSubstyle());
+        dto.setSubStyle(result.savedSubStyle());
         dto.setBrand(result.savedBrand());
 
         if (dto.getSellingPrice() == null) {
@@ -68,11 +68,11 @@ public class BeerService {
     }
 
     private Result checkFieldDistinction(Beer dto) {
-        Substyle savedSubstyle = substyleService.getSubstyleByName(dto.getSubstyle().getName()).orElseGet(() -> {
-            Substyle substyle = new Substyle();
-            substyle.setName(dto.getSubstyle().getName());
-            substyle.setStyle(dto.getStyle());
-            return substyleService.createSubstyle(substyle);
+        SubStyle savedSubStyle = subStyleService.getSubStyleByName(dto.getSubStyle().getName()).orElseGet(() -> {
+            SubStyle subStyle = new SubStyle();
+            subStyle.setName(dto.getSubStyle().getName());
+            subStyle.setStyle(dto.getStyle());
+            return subStyleService.createSubStyle(subStyle);
         });
 
         Brand savedBrand = brandService.getBrandByName(dto.getBrand().getName()).orElseGet(() -> {
@@ -81,11 +81,11 @@ public class BeerService {
             return brandService.createBrand(brand);
         });
 
-        return new Result(savedSubstyle, savedBrand);
+        return new Result(savedSubStyle, savedBrand);
 
     }
 
-    private record Result(Substyle savedSubstyle, Brand savedBrand) {
+    private record Result(SubStyle savedSubStyle, Brand savedBrand) {
     }
 
     public List<BeerDto> getAllBeerDtos() {

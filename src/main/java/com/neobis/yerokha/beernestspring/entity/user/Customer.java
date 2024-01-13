@@ -1,6 +1,7 @@
 package com.neobis.yerokha.beernestspring.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.neobis.yerokha.beernestspring.enums.Role;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,7 +13,6 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -20,7 +20,15 @@ import java.util.Set;
 @Table(name = "customer")
 @Getter
 @Setter
-public class Customer extends User {
+public class Customer extends Person {
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "customer_role_junction",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")}
+    )
+    private Set<Role> authorities;
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
@@ -35,7 +43,6 @@ public class Customer extends User {
     private Set<ContactInfo> contactInfo;
 
     public Customer() {
-        contactInfo = new HashSet<>();
     }
 
     @Override

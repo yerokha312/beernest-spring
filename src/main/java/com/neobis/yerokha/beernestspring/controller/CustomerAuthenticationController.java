@@ -1,7 +1,7 @@
 package com.neobis.yerokha.beernestspring.controller;
 
 import com.neobis.yerokha.beernestspring.dto.CreateCustomerDto;
-import com.neobis.yerokha.beernestspring.entity.user.Customer;
+import com.neobis.yerokha.beernestspring.dto.CustomerDto;
 import com.neobis.yerokha.beernestspring.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,8 +21,8 @@ public class CustomerAuthenticationController {
     }
 
     @PostMapping("/register")
-    public Customer registerCustomer(@RequestBody CreateCustomerDto dto) {
-        return userService.createCustomer(dto);
+    public CustomerDto registerCustomer(@RequestBody CreateCustomerDto dto) {
+        return userService.registerCustomer(dto);
     }
 //
 //    @PostMapping("/login")

@@ -7,10 +7,10 @@ import com.neobis.yerokha.beernestspring.entity.user.Customer;
 import com.neobis.yerokha.beernestspring.entity.user.Order;
 import com.neobis.yerokha.beernestspring.entity.user.OrderItem;
 import com.neobis.yerokha.beernestspring.enums.Status;
-import com.neobis.yerokha.beernestspring.exception.CustomerDoesNotExistException;
 import com.neobis.yerokha.beernestspring.exception.OrderDoesNotExistException;
-import com.neobis.yerokha.beernestspring.exception.UnableToCancelException;
 import com.neobis.yerokha.beernestspring.exception.OutOfStockException;
+import com.neobis.yerokha.beernestspring.exception.UnableToCancelException;
+import com.neobis.yerokha.beernestspring.exception.UserDoesNotExistException;
 import com.neobis.yerokha.beernestspring.repository.user.CustomerRepository;
 import com.neobis.yerokha.beernestspring.repository.user.OrderRepository;
 import com.neobis.yerokha.beernestspring.service.beer.BeerService;
@@ -43,7 +43,7 @@ public class OrderService {
 
         Customer customer = customerRepository.
                 findById(dto.getCustomerId()).orElseThrow(() ->
-                        new CustomerDoesNotExistException("This customer does not exist"));
+                        new UserDoesNotExistException("This customer does not exist"));
 
         order.setCustomer(customer);
         order.setCreationDateTime(LocalDateTime.now());
@@ -69,7 +69,7 @@ public class OrderService {
 
         int quantityToSubtract = orderItem.getQuantity();
 
-        if(beer.getStockAmount() < quantityToSubtract) {
+        if (beer.getStockAmount() < quantityToSubtract) {
             throw new OutOfStockException("Ordered quantity exceeds available stock");
         }
 
@@ -88,7 +88,7 @@ public class OrderService {
         try {
             return orderRepository.findAllByCustomerId(customerId, pageable).map(OrderMapper::mapOrderToDto);
         } catch (Exception e) {
-            throw new CustomerDoesNotExistException("Customer with id: " + customerId + " not found");
+            throw new UserDoesNotExistException("Customer with id: " + customerId + " not found");
         }
     }
 
