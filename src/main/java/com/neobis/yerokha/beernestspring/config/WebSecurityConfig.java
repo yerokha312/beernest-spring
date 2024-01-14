@@ -46,6 +46,7 @@ public class WebSecurityConfig {
                         authz
                                 .requestMatchers("v1/beers/**").permitAll()
                                 .requestMatchers("v1/register", "v1/login", "v1/users/recovery").anonymous()
+                                // guess the problem is here or there
                                 .requestMatchers("v1/users/**", "v1/orders/**").hasRole("CUSTOMER")
                                 .requestMatchers(HttpMethod.GET, "v1/admin/**").hasAuthority("OBSERVER")
                                 .anyRequest().hasAuthority("ADMIN")
