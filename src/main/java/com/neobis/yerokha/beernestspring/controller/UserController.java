@@ -38,7 +38,6 @@ public class UserController {
 
     @GetMapping("/account")
     public CustomerDto getCustomer(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        System.out.println(token);
         return userService.getCustomerDto(token);
     }
 
@@ -66,14 +65,12 @@ public class UserController {
     @DeleteMapping("/")
     public ResponseEntity<String> deleteAccount(@RequestBody Map<String, String> body) {
         userService.setActiveFalse(body);
-
         return new ResponseEntity<>("Your account successfully deleted", HttpStatus.OK);
     }
 
     @PutMapping("/recovery")
     public ResponseEntity<String> restoreAccount(@RequestBody Map<String, String> body) {
         userService.setActiveTrue(body);
-
         return new ResponseEntity<>("Your account successfully restored", HttpStatus.OK);
     }
 }

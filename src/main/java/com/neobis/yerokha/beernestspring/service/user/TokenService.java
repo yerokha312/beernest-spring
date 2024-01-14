@@ -33,7 +33,6 @@ public class TokenService {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(" "));
 
-        System.out.println(scope);
         JwtClaimsSet claimsSet = JwtClaimsSet.builder()
                 .issuer("self")
                 .issuedAt(now)
