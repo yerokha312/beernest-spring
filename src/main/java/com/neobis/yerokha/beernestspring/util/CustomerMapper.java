@@ -19,6 +19,7 @@ public class CustomerMapper {
 
     public static CustomerDto mapToCustomerDto(Customer customer) {
 
+        System.out.println(customer);
         return new CustomerDto(
                 customer.getId(), customer.getFirstName(), customer.getLastName(),
                 customer.getBirthDate(), customer.getEmail());

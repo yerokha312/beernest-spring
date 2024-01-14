@@ -38,15 +38,17 @@ public class UserService implements UserDetailsService {
     private final EmployeeRepository employeeRepository;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
+    private final TokenService tokenService;
 
     public static final int PAGE_SIZE = 10;
 
     @Autowired
-    public UserService(CustomerRepository customerRepository, EmployeeRepository employeeRepository, RoleService roleService, PasswordEncoder passwordEncoder) {
+    public UserService(CustomerRepository customerRepository, EmployeeRepository employeeRepository, RoleService roleService, PasswordEncoder passwordEncoder, TokenService tokenService) {
         this.customerRepository = customerRepository;
         this.employeeRepository = employeeRepository;
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
+        this.tokenService = tokenService;
     }
 
     public CustomerDto registerCustomer(CreateCustomerDto dto) {
@@ -110,7 +112,7 @@ public class UserService implements UserDetailsService {
         customerRepository.save(customer);
     }
 
-    private Customer getCustomerByEmail(String email) {
+    public Customer getCustomerByEmail(String email) {
         return customerRepository.findByEmail(email)
                 .orElseThrow(() -> new UserDoesNotExistException("User with email: " + email + " not found"));
     }
@@ -133,6 +135,10 @@ public class UserService implements UserDetailsService {
         } catch (Exception e) {
             throw new UserDoesNotExistException("Customer with id: " + id + " not found.");
         }
+    }
+
+    public CustomerDto getCustomerDto(String token) {
+        return CustomerMapper.mapToCustomerDto(getCustomerByEmail(tokenService.getUsernameFromToken(token)));
     }
 
     @Override
