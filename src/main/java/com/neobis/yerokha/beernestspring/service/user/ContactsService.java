@@ -27,7 +27,7 @@ public class ContactsService {
     }
 
     public ContactInfo getOneContact(Long customerId, Long id) {
-        return contactInfoRepository.findContactInfoByCustomersIdAndId(customerId, id)
+        return contactInfoRepository.findByCustomersIdAndId(customerId, id)
                 .orElseThrow(() -> new ContactInfoException("Contact info not found"));
     }
 }

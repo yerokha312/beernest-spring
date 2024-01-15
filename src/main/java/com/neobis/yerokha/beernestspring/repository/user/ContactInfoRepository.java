@@ -11,8 +11,7 @@ import java.util.Optional;
 @Repository
 public interface ContactInfoRepository extends JpaRepository<ContactInfo, Long> {
 
-    List<ContactInfo> findAllByCustomersId(Long customerId);
+    List<ContactInfo> findAllByCustomersId(Long id);
 
-    Optional<ContactInfo> findContactInfoByCustomersIdAndId(Long customerId, Long id);
-
+    Optional<ContactInfo> findByCustomersIdAndId(Long customerId, Long id);
 }

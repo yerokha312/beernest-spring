@@ -7,11 +7,11 @@ import com.neobis.yerokha.beernestspring.entity.user.Customer;
 import com.neobis.yerokha.beernestspring.entity.user.Order;
 import com.neobis.yerokha.beernestspring.entity.user.OrderItem;
 import com.neobis.yerokha.beernestspring.enums.Status;
+import com.neobis.yerokha.beernestspring.exception.CustomerIdDoesNotMatch;
 import com.neobis.yerokha.beernestspring.exception.OrderDoesNotExistException;
 import com.neobis.yerokha.beernestspring.exception.OutOfStockException;
 import com.neobis.yerokha.beernestspring.exception.UnableToCancelException;
 import com.neobis.yerokha.beernestspring.exception.UserDoesNotExistException;
-import com.neobis.yerokha.beernestspring.repository.user.CustomerRepository;
 import com.neobis.yerokha.beernestspring.repository.user.OrderRepository;
 import com.neobis.yerokha.beernestspring.service.beer.BeerService;
 import com.neobis.yerokha.beernestspring.util.OrderMapper;
@@ -26,24 +26,24 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final BeerService beerService;
-    private final CustomerRepository customerRepository;
+    private final UserService userService;
 
     public static final int PAGE_SIZE = 10;
 
     public OrderService(OrderRepository orderRepository,
-                        BeerService beerService,
-                        CustomerRepository customerRepository) {
+                        BeerService beerService, UserService userService) {
         this.orderRepository = orderRepository;
         this.beerService = beerService;
-        this.customerRepository = customerRepository;
+        this.userService = userService;
     }
 
-    public OrderDto createOrder(CreateOrderDto dto) {
-        Order order = new Order();
+    public OrderDto createOrder(Long id, CreateOrderDto dto) {
+        Customer customer = userService.getCustomerById(id);
+        if (!customer.getId().equals(dto.getCustomerId())) {
+            throw new CustomerIdDoesNotMatch("Customer's id does not match");
+        }
 
-        Customer customer = customerRepository.
-                findById(dto.getCustomerId()).orElseThrow(() ->
-                        new UserDoesNotExistException("This customer does not exist"));
+        Order order = new Order();
 
         order.setCustomer(customer);
         order.setCreationDateTime(LocalDateTime.now());
@@ -99,7 +99,7 @@ public class OrderService {
                 .orElseThrow(() -> new OrderDoesNotExistException("Order with id: " + orderId + " not found.")));
     }
 
-    public void cancelOrder(Long orderId) {
+    public void cancelCustomersOrder(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderDoesNotExistException("Order with id: " + orderId + " not found."));
 
@@ -110,5 +110,37 @@ public class OrderService {
         order.setStatus(Status.CANCELED);
 
         orderRepository.save(order);
+    }
+
+    public Page<OrderDto> getAllOrdersByCustomer(Long id, Pageable pageable) {
+        try {
+            return orderRepository.findAllByCustomerId(id, pageable).map(OrderMapper::mapOrderToDto);
+        } catch (Exception e) {
+            throw new UserDoesNotExistException("Customer with id: " + id + " not found");
+        }
+    }
+
+    public OrderDto getOneOrder(Long customerId, Long orderId) {
+        return OrderMapper.mapOrderToDto(orderRepository
+                .findByCustomerIdAndId(customerId, orderId)
+                .orElseThrow(() -> new OrderDoesNotExistException("Order with id: " + orderId + " not found.")));
+    }
+
+    public void cancelOrder(Long customerId, Long orderId) {
+        Order order = orderRepository
+                .findByCustomerIdAndId(customerId, orderId)
+                .orElseThrow(() -> new OrderDoesNotExistException("Order with id: " + orderId + " not found."));
+
+        if (order.getIsDelivered()) {
+            throw new UnableToCancelException("Order is already delivered, try to return order instead");
+        }
+
+        order.setStatus(Status.CANCELED);
+
+        orderRepository.save(order);
+    }
+
+    public Page<OrderDto> getAllOrders(Pageable pageable) {
+        return orderRepository.findAll(pageable).map(OrderMapper::mapOrderToDto);
     }
 }

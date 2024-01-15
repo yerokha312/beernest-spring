@@ -40,33 +40,6 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(authz ->
-                        authz
-                                .requestMatchers("v1/beers/**").permitAll()
-                                .requestMatchers("v1/register", "v1/login", "v1/users/recovery").anonymous()
-                                // guess the problem is here or there
-                                .requestMatchers("v1/users/**", "v1/orders/**").hasAuthority("SCOPE_CUSTOMER")
-                                .requestMatchers(HttpMethod.GET, "v1/admin/**").hasAuthority("SCOPE_OBSERVER")
-                                .anyRequest().hasAuthority("SCOPE_ADMIN")
-
-                )
-                .oauth2ResourceServer(oauth -> oauth.jwt(withDefaults()))
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(STATELESS))
-                .csrf(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable);
-
-        return http.build();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
     public AuthenticationManager authenticationManager(UserDetailsService userDetailsService) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
@@ -76,13 +49,39 @@ public class WebSecurityConfig {
     }
 
     @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authz ->
+                        authz
+                                .requestMatchers("v1/beers/**").permitAll()
+                                .requestMatchers("v1/register", "v1/token", "v1/users/recovery").anonymous()
+                                .requestMatchers("v1/users/**", "v1/orders/**").hasAuthority("SCOPE_CUSTOMER")
+                                .requestMatchers(HttpMethod.GET, "v1/admin/**").hasAuthority("SCOPE_OBSERVER")
+                                .anyRequest().hasAuthority("SCOPE_ADMIN")
+
+                )
+                .oauth2ResourceServer(oauth -> oauth.jwt(withDefaults()))
+                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS));
+
+
+        return http.build();
+    }
+
+    @Bean
     JwtDecoder jwtDecoder() {
-        return NimbusJwtDecoder.withPublicKey(keys.getPublicKey()).build();
+        return NimbusJwtDecoder.withPublicKey(keys.publicKey()).build();
     }
 
     @Bean
     JwtEncoder jwtEncoder() {
-        JWK jwk = new RSAKey.Builder(keys.getPublicKey()).privateKey(keys.getPrivateKey()).build();
+        JWK jwk = new RSAKey.Builder(keys.publicKey()).privateKey(keys.privateKey()).build();
         JWKSource<SecurityContext> jwkSource = new ImmutableJWKSet<>(new JWKSet(jwk));
         return new NimbusJwtEncoder(jwkSource);
     }

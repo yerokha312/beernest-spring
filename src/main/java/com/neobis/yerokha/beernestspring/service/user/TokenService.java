@@ -1,5 +1,6 @@
 package com.neobis.yerokha.beernestspring.service.user;
 
+import com.neobis.yerokha.beernestspring.util.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,6 +13,7 @@ import org.springframework.security.oauth2.server.resource.InvalidBearerTokenExc
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,14 +35,22 @@ public class TokenService {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(" "));
 
+        Long userId = getUserIdFromAuthentication(authentication);
+
         JwtClaimsSet claimsSet = JwtClaimsSet.builder()
                 .issuer("self")
                 .issuedAt(now)
+                .expiresAt(now.plus(15, ChronoUnit.MINUTES))
                 .subject(authentication.getName())
                 .claim("scope", scope)
+                .claim("userId", userId)
                 .build();
 
         return jwtEncoder.encode(JwtEncoderParameters.from(claimsSet)).getTokenValue();
+    }
+
+    private static Long getUserIdFromAuthentication(Authentication authentication) {
+        return ((CustomUserDetails) authentication.getPrincipal()).getUserId();
     }
 
     public String getUsernameFromToken(String token) {
@@ -50,8 +60,13 @@ public class TokenService {
         }
         String strippedToken = token.substring(7);
         Jwt decoded = jwtDecoder.decode(strippedToken);
-        String username = decoded.getSubject();
 
-        return username;
+        return decoded.getSubject();
+    }
+
+    public static Long getUserIdFromAuthToken(Authentication authentication) {
+        Jwt jwt = (Jwt) authentication.getPrincipal();
+        return jwt.getClaim("userId");
+
     }
 }

@@ -9,13 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.neobis.yerokha.beernestspring.service.user.OrderService.PAGE_SIZE;
 
 @RestController
+@RequestMapping("/v1/admin/orders")
 public class AdminOrderController {
 
     private final OrderService orderService;
@@ -25,8 +25,8 @@ public class AdminOrderController {
     }
 
     @GetMapping("/")
-    public Page<OrderDto> getAllOrdersByCustomerId(@RequestParam(name = "customerId") Long customerId) {
-        return orderService.getAllOrdersByCustomerId(customerId, Pageable.ofSize(PAGE_SIZE));
+    public Page<OrderDto> getAllOrders() {
+        return orderService.getAllOrders(Pageable.ofSize(PAGE_SIZE));
     }
 
     @GetMapping("/{orderId}")
@@ -34,9 +34,9 @@ public class AdminOrderController {
         return orderService.getOrderById(orderId);
     }
 
-    @PutMapping("/")
-    public ResponseEntity<String> cancelOrder(@RequestBody OrderDto dto) {
-        orderService.cancelOrder(dto.getOrderId());
+    @PutMapping("/{orderId}")
+    public ResponseEntity<String> cancelOrder(@PathVariable Long orderId) {
+        orderService.cancelCustomersOrder(orderId);
 
         return new ResponseEntity<>("Order successfully canceled", HttpStatus.OK);
     }

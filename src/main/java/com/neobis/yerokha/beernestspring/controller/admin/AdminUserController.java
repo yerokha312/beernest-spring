@@ -1,6 +1,8 @@
 package com.neobis.yerokha.beernestspring.controller.admin;
 
-import com.neobis.yerokha.beernestspring.dto.CustomerDto;
+import com.neobis.yerokha.beernestspring.dto.OrderDto;
+import com.neobis.yerokha.beernestspring.dto.UserDto;
+import com.neobis.yerokha.beernestspring.service.user.OrderService;
 import com.neobis.yerokha.beernestspring.service.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,23 +23,25 @@ import static com.neobis.yerokha.beernestspring.service.user.UserService.PAGE_SI
 public class AdminUserController {
 
     private final UserService userService;
+    private final OrderService orderService;
 
-    public AdminUserController(UserService userService) {
+    public AdminUserController(UserService userService, OrderService orderService) {
         this.userService = userService;
+        this.orderService = orderService;
     }
 
     @GetMapping("/")
-    public Page<CustomerDto> getAllCustomers() {
+    public Page<UserDto> getAllCustomers() {
         return userService.getAllCustomerDtos(Pageable.ofSize(PAGE_SIZE));
     }
 
     @GetMapping("/{customerId}")
-    public CustomerDto getOneCustomer(@PathVariable Long customerId) {
+    public UserDto getOneCustomer(@PathVariable Long customerId) {
         return userService.getCustomerDtoById(customerId);
     }
 
     @PutMapping("/")
-    public CustomerDto updateCustomer(@RequestBody CustomerDto dto) {
+    public UserDto updateCustomer(@RequestBody UserDto dto) {
         return userService.updateCustomer(dto);
     }
 
@@ -47,4 +51,10 @@ public class AdminUserController {
 
         return new ResponseEntity<>("Customer successfully deleted", HttpStatus.OK);
     }
+
+    @GetMapping("/{customerId}/orders")
+    public Page<OrderDto> getAllOrdersByCustomerId(@PathVariable Long customerId) {
+        return orderService.getAllOrdersByCustomerId(customerId, Pageable.ofSize(OrderService.PAGE_SIZE));
+    }
+
 }

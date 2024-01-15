@@ -57,4 +57,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleInvalidCredentials(InvalidCredentialsException exception) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
     }
+
+    @ExceptionHandler({CustomerIdDoesNotMatch.class})
+    public ResponseEntity<String> handleCustomerIdDoesNotMatch(CustomerIdDoesNotMatch exception) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
+    }
+
 }

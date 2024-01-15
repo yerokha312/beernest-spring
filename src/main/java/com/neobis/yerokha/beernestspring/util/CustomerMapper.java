@@ -1,7 +1,7 @@
 package com.neobis.yerokha.beernestspring.util;
 
 import com.neobis.yerokha.beernestspring.dto.CreateCustomerDto;
-import com.neobis.yerokha.beernestspring.dto.CustomerDto;
+import com.neobis.yerokha.beernestspring.dto.UserDto;
 import com.neobis.yerokha.beernestspring.entity.user.Customer;
 
 public class CustomerMapper {
@@ -17,14 +17,14 @@ public class CustomerMapper {
         return entity;
     }
 
-    public static CustomerDto mapToCustomerDto(Customer customer) {
+    public static UserDto mapToCustomerDto(Customer customer) {
 
-        return new CustomerDto(
+        return new UserDto(
                 customer.getId(), customer.getFirstName(), customer.getLastName(),
                 customer.getBirthDate(), customer.getEmail());
     }
 
-    public static void mapToCustomerEntity(CustomerDto dto, Customer entity) {
+    public static void mapToCustomerEntity(UserDto dto, Customer entity) {
 
         entity.setFirstName(dto.firstName());
         entity.setLastName(dto.lastName());
