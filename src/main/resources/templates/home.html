@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+                xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Beer nest Home Page</title>
+</head>
+<body>
+  <h1>Beer nest Home Page</h1>
+  <div sec:authorize="hasAuthority('CUSTOMER')">
+      <p>
+          <a th:href="@{/customers}">Customers Page</a>
+      </p>
+  </div>
+
+  <div sec:authorize="hasAuthority('ADMIN')">
+      <p>
+          <a th:href="@{/admin}">Admin Panel</a>
+      </p>
+  </div>
+  <hr>
+  <div sec:authorize="anonymous">
+      <p>
+          <a th:href="@{/login}">Login</a>
+      </p>
+  </div>
+<br>
+  <div sec:authorize="anonymous">
+      <p>
+          <a th:href="@{/registration}">Sign up</a>
+      </p>
+  </div>
+  <form sec:authorize="authenticated" action="#" th:action="@{/logout}" method="POST">
+
+      <input type="submit" value="Logout">
+  </form>
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en"
+                xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Customers Page</title>
+</head>
+<body>
+<h1>Welcome to Customers Page!</h1>
+
+<p>
+    User: <span sec:authentication="principal.username"></span>
+    <br><br>
+    Role: <span sec:authentication="principal.authorities"></span>
+</p>
+
+<hr>
+<a th:href="@{/home}">Back to Home Page</a>
+</body>
+</html>

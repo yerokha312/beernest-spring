@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel</title>
+</head>
+<body>
+<h1>Do admin stuff</h1>
+
+User: <span sec:authentication="principal.username"></span>
+<br><br>
+Role: <span sec:authentication="principal.authorities"></span>
+
+<hr>
+<a th:href="@{/home}">Back to Home Page</a>
+
+</body>
+</html>

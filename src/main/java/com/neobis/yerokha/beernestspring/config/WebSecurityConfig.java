@@ -24,6 +24,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
@@ -54,8 +55,9 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
         http
+                .securityMatcher("/v1/**")
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authz ->
@@ -70,6 +72,38 @@ public class WebSecurityConfig {
                 .oauth2ResourceServer(oauth -> oauth.jwt(withDefaults()))
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS));
 
+        return http.build();
+    }
+
+    @Bean
+    public SecurityFilterChain mvcSecurityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests(authz ->
+                        authz
+                                .requestMatchers("/registration", "/register", "/registration?success").anonymous()
+                                .requestMatchers("/home", "/").permitAll()
+                                .requestMatchers("/customers/**").hasAuthority("CUSTOMER")
+                                .requestMatchers("/admin/**").hasAuthority("ADMIN")
+                                .anyRequest().authenticated()
+                )
+                .formLogin(form ->
+                        form
+                                .loginPage("/login")
+                                .loginProcessingUrl("/authenticateTheUser")
+                                .defaultSuccessUrl("/home")
+                                .failureUrl("/login?error")
+                                .permitAll()
+                )
+                .logout(logout ->
+                        logout
+                                .invalidateHttpSession(true)
+                                .clearAuthentication(true)
+                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                                .logoutSuccessUrl("/login?logout")
+                                .permitAll())
+                .exceptionHandling(handler ->
+                        handler
+                                .accessDeniedPage("/access-denied"));
 
         return http.build();
     }

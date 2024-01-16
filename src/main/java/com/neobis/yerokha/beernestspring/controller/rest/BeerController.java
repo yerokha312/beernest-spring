@@ -1,4 +1,4 @@
-package com.neobis.yerokha.beernestspring.controller;
+package com.neobis.yerokha.beernestspring.controller.rest;
 
 import com.neobis.yerokha.beernestspring.dto.BeerDto;
 import com.neobis.yerokha.beernestspring.service.beer.BeerService;

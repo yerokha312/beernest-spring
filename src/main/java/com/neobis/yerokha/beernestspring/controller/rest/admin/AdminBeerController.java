@@ -1,4 +1,4 @@
-package com.neobis.yerokha.beernestspring.controller.admin;
+package com.neobis.yerokha.beernestspring.controller.rest.admin;
 
 import com.neobis.yerokha.beernestspring.entity.beer.Beer;
 import com.neobis.yerokha.beernestspring.service.beer.BeerService;

@@ -1,4 +1,4 @@
-package com.neobis.yerokha.beernestspring.controller;
+package com.neobis.yerokha.beernestspring.controller.rest;
 
 import com.neobis.yerokha.beernestspring.dto.CreateOrderDto;
 import com.neobis.yerokha.beernestspring.dto.OrderDto;

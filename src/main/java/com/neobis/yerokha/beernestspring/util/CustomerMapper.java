@@ -6,6 +6,17 @@ import com.neobis.yerokha.beernestspring.entity.user.Customer;
 
 public class CustomerMapper {
 
+    public static CreateCustomerDto mapEntityToCCD(Customer entity) {
+
+        return new CreateCustomerDto(
+                entity.getFirstName(),
+                entity.getLastName(),
+                entity.getBirthDate(),
+                entity.getEmail(),
+                entity.getPassword()
+        );
+    }
+
     public static Customer mapToCustomerEntity(CreateCustomerDto dto) {
         Customer entity = new Customer();
 

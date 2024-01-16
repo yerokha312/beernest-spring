@@ -1,4 +1,4 @@
-package com.neobis.yerokha.beernestspring.controller;
+package com.neobis.yerokha.beernestspring.controller.rest;
 
 import com.neobis.yerokha.beernestspring.dto.UserDto;
 import com.neobis.yerokha.beernestspring.entity.user.ContactInfo;
@@ -63,7 +63,7 @@ public class UserController {
         return contactsService.getOneContact(getUserIdFromAuthToken(authentication), id);
     }
 
-    @DeleteMapping("/")
+    @DeleteMapping("/delete")
     public ResponseEntity<String> deleteAccount(Authentication authentication, @RequestBody Map<String, String> body) {
         userService.setActiveFalse(getUserIdFromAuthToken(authentication), body);
         return new ResponseEntity<>("Your account successfully deleted", HttpStatus.OK);
