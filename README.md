@@ -37,6 +37,6 @@ and they are restricted by authorization accordingly.
 
 `author` Yerbolat
 
-`linkedIn` www.linkedin.com/in/yy312
+`linkedIn` https://lnkd.in/ddpDGKY2
 
 `date` Creation date: 04 January 2024
