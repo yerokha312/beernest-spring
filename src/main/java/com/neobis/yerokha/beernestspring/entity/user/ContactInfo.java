@@ -33,6 +33,9 @@ public class ContactInfo {
     @JsonIgnore
     private Set<Customer> customers;
 
+    @Column(name = "is_active")
+    private Boolean isActive;
+
     public ContactInfo() {
         customers = new HashSet<>();
     }

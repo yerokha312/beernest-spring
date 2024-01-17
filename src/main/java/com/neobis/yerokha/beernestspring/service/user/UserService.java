@@ -2,10 +2,10 @@ package com.neobis.yerokha.beernestspring.service.user;
 
 import com.neobis.yerokha.beernestspring.dto.CreateCustomerDto;
 import com.neobis.yerokha.beernestspring.dto.UserDto;
-import com.neobis.yerokha.beernestspring.entity.user.ContactInfo;
 import com.neobis.yerokha.beernestspring.entity.user.Customer;
 import com.neobis.yerokha.beernestspring.entity.user.Employee;
 import com.neobis.yerokha.beernestspring.entity.user.Person;
+import com.neobis.yerokha.beernestspring.exception.CustomerIdDoesNotMatch;
 import com.neobis.yerokha.beernestspring.exception.EmailAlreadyTakenException;
 import com.neobis.yerokha.beernestspring.exception.InvalidCredentialsException;
 import com.neobis.yerokha.beernestspring.exception.InvalidPasswordException;
@@ -90,13 +90,6 @@ public class UserService implements UserDetailsService {
         return userDto;
     }
 
-    public ContactInfo addContacts(Long id, ContactInfo contactInfo) {
-        Customer customer = getCustomerById(id);
-        customer.getContactInfo().add(contactInfo);
-        customerRepository.save(customer);
-        return contactInfo;
-    }
-
     public void setActiveFalse(Long id, Map<String, String> body) {
         Customer customer = getCustomerById(id);
 
@@ -146,6 +139,9 @@ public class UserService implements UserDetailsService {
     }
 
     public UserDto updateProfileInformation(Long id, UserDto userDto) {
+        if (!id.equals(userDto.id())) {
+            throw new CustomerIdDoesNotMatch("Id must match");
+        }
         Customer dbCustomer = getCustomerById(id);
         CustomerMapper.mapToCustomerEntity(userDto, dbCustomer);
         customerRepository.save(dbCustomer);

@@ -22,7 +22,7 @@ public class BeerController {
 
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/all")
     public List<BeerDto> getAllBeers() {
 
         return beerService.getAllBeerDtos();
