@@ -1,6 +1,7 @@
 package com.neobis.yerokha.beernestspring.service.user;
 
 import com.neobis.yerokha.beernestspring.dto.CreateCustomerDto;
+import com.neobis.yerokha.beernestspring.dto.Credentials;
 import com.neobis.yerokha.beernestspring.dto.UserDto;
 import com.neobis.yerokha.beernestspring.entity.user.Customer;
 import com.neobis.yerokha.beernestspring.entity.user.Employee;
@@ -26,7 +27,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -90,15 +90,15 @@ public class UserService implements UserDetailsService {
         return userDto;
     }
 
-    public void setActiveFalse(Long id, Map<String, String> body) {
+    public void setActiveFalse(Long id, Credentials credentials) {
         Customer customer = getCustomerById(id);
 
-        if (!customer.getEmail().equals(body.get("username"))) {
+        if (!customer.getEmail().equals(credentials.username())) {
             throw new InvalidCredentialsException("Customer's email does not match");
         }
 
 
-        if (!passwordEncoder.matches(body.get("password"), customer.getPassword())) {
+        if (!passwordEncoder.matches(credentials.password(), customer.getPassword())) {
             throw new InvalidPasswordException("Password is incorrect");
         }
 
@@ -107,10 +107,10 @@ public class UserService implements UserDetailsService {
         customerRepository.save(customer);
     }
 
-    public void setActiveTrue(Map<String, String> body) {
-        Customer customer = getCustomerByEmail(body.get("email"));
+    public void setActiveTrue(Credentials credentials) {
+        Customer customer = getCustomerByEmail(credentials.username());
 
-        if (!passwordEncoder.matches(body.get("password"), customer.getPassword())) {
+        if (!passwordEncoder.matches(credentials.password(), customer.getPassword())) {
             throw new InvalidPasswordException("Password is incorrect");
         }
 

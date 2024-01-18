@@ -13,7 +13,7 @@ import java.util.List;
 public class OrderDto {
 
     private Long orderId;
-    //    private Long customerId;
+    private String customerName;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     private LocalDateTime creationDateTime;
     private ContactInfo contactInfo;

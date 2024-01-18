@@ -1,13 +1,12 @@
 package com.neobis.yerokha.beernestspring.service.user;
 
+import com.neobis.yerokha.beernestspring.dto.Credentials;
 import com.neobis.yerokha.beernestspring.exception.InvalidCredentialsException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Service
 public class AuthenticationService {
@@ -20,19 +19,14 @@ public class AuthenticationService {
         this.tokenService = tokenService;
     }
 
-    public String login(Map<String, String> body) {
-
-
-        String username = body.get("username");
-        String password = body.get("password");
-
+    public String login(Credentials credentials) {
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(username, password));
+                    new UsernamePasswordAuthenticationToken(credentials.username(), credentials.password()));
             return tokenService.generateToken(authentication);
         } catch (
                 AuthenticationException e) {
-            throw new InvalidCredentialsException("Username or password is incorrect");
+            throw new InvalidCredentialsException("Username or password is invalid");
         }
     }
 }

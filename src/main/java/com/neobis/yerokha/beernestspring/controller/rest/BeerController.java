@@ -3,6 +3,7 @@ package com.neobis.yerokha.beernestspring.controller.rest;
 import com.neobis.yerokha.beernestspring.dto.BeerDto;
 import com.neobis.yerokha.beernestspring.service.beer.BeerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,16 +24,16 @@ public class BeerController {
     }
 
     @GetMapping("/all")
-    public List<BeerDto> getAllBeers() {
+    public ResponseEntity<List<BeerDto>> getAllBeers() {
 
-        return beerService.getAllBeerDtos();
+        return ResponseEntity.ok(beerService.getAllBeerDtos());
 
     }
 
     @GetMapping("/{beerId}")
-    public BeerDto getBeerById(@PathVariable Long beerId) {
+    public ResponseEntity<BeerDto> getBeerById(@PathVariable Long beerId) {
 
-        return beerService.getBeerDtoById(beerId);
+        return ResponseEntity.ok(beerService.getBeerDtoById(beerId));
 
     }
 }

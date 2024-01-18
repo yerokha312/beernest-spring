@@ -11,8 +11,10 @@ public class OrderMapper {
 
     public static OrderDto mapOrderToDto(Order entity) {
         OrderDto dto = new OrderDto();
+        String customerName = entity.getCustomer().getFirstName() + " " + entity.getCustomer().getLastName();
 
         dto.setOrderId(entity.getId());
+        dto.setCustomerName(customerName);
         dto.setCreationDateTime(entity.getCreationDateTime());
         dto.setContactInfo(entity.getContactInfo());
         dto.setTotalPrice(entity.getTotalPrice());

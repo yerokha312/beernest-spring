@@ -62,10 +62,10 @@ public class WebSecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authz ->
                         authz
-                                .requestMatchers("v1/beers/**").permitAll()
-                                .requestMatchers("v1/register", "v1/token", "v1/users/recovery").anonymous()
-                                .requestMatchers("v1/users/**", "v1/orders/**").hasAuthority("SCOPE_CUSTOMER")
-                                .requestMatchers(HttpMethod.GET, "v1/admin/**").hasAuthority("SCOPE_OBSERVER")
+                                .requestMatchers("/v1/beers/**").permitAll()
+                                .requestMatchers("/v1/register", "/v1/token", "/v1/users/recovery").anonymous()
+                                .requestMatchers("/v1/users/**", "/v1/orders/**", "/v1/contacts/**").hasAuthority("SCOPE_CUSTOMER")
+                                .requestMatchers(HttpMethod.GET, "/v1/admin/**").hasAuthority("SCOPE_OBSERVER")
                                 .anyRequest().hasAuthority("SCOPE_ADMIN")
 
                 )

@@ -31,6 +31,7 @@ public class ContactsService {
 
     public ContactInfoDto addContacts(Long id, ContactInfo contactInfo) {
         Customer customer = userService.getCustomerById(id);
+        contactInfo.setIsActive(true);
         customer.getContactInfo().add(contactInfo);
         customerRepository.save(customer);
         return entityToDto(contactInfo);
