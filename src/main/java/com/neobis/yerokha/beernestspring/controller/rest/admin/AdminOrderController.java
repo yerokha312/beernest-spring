@@ -24,14 +24,14 @@ public class AdminOrderController {
         this.orderService = orderService;
     }
 
-    @GetMapping("/")
-    public Page<OrderDto> getAllOrders() {
-        return orderService.getAllOrders(Pageable.ofSize(PAGE_SIZE));
+    @GetMapping("/all")
+    public ResponseEntity<Page<OrderDto>> getAllOrders() {
+        return ResponseEntity.ok(orderService.getAllOrders(Pageable.ofSize(PAGE_SIZE)));
     }
 
     @GetMapping("/{orderId}")
-    public OrderDto getOrderById(@PathVariable Long orderId) {
-        return orderService.getOrderById(orderId);
+    public ResponseEntity<OrderDto> getOrderById(@PathVariable Long orderId) {
+        return ResponseEntity.ok(orderService.getOrderById(orderId));
     }
 
     @PutMapping("/{orderId}")

@@ -76,6 +76,10 @@ public class Beer {
     @Column(name = "stock_amount")
     private int stockAmount;
 
+    public Beer() {
+
+    }
+
     public void generateCode() {
         StringBuilder builder = new StringBuilder();
         builder

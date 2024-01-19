@@ -15,7 +15,8 @@ create table contact_info
 (
     contact_info_id IDENTITY PRIMARY KEY,
     phone_number    VARCHAR(255),
-    address         VARCHAR(255)
+    address         VARCHAR(255),
+    is_active       BOOLEAN DEFAULT TRUE
 );
 
 create table customer
@@ -56,9 +57,9 @@ create table employee
 );
 
 insert into employee (user_id, first_name, last_name, dob, email, password, reg_date, active)
-VALUES (1, 'admin', 'test', '2024-01-13', 'admin@test.ru',
+VALUES (10000, 'admin', 'test', '2024-01-13', 'admin@test.ru',
         '$2a$10$qQGmKSkxTutAFsG02GseKOLVhwbp/JEMT54bBnWKUc.YyOWHLpeLq', '2024-01-13', true),
-       (2, 'observer', 'test', '2024-01-13', 'observer@test.ru',
+       (10001, 'observer', 'test', '2024-01-13', 'observer@test.ru',
         '$2a$10$5UERl8ptShF3doTo27bG2uvVRqLpfUt1N7WDdD9bAzzra4JqfAKbq', '2024-01-13', true);
 
 create table orders
@@ -106,9 +107,9 @@ create table employee_role_junction
 );
 
 insert into employee_role_junction (user_id, role_id)
-values (1, 3),
-       (1, 2),
-       (2, 2);
+values (10000, 3),
+       (10000, 2),
+       (10001, 2);
 
 create table sub_style
 (

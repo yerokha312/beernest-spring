@@ -131,7 +131,7 @@ class ContactControllerTest {
         String token = authenticationService.login(credentials);
 
         mockMvc.perform(delete("/v1/contacts/delete/7")
-                .header("Authorization", "Bearer " + token)
+                        .header("Authorization", "Bearer " + token)
                 )
                 .andExpect(status().isOk())
                 .andExpect(content().string("Contact info successfully deleted"));

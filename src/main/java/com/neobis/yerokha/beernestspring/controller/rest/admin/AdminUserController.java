@@ -38,18 +38,18 @@ public class AdminUserController {
     }
 
     @GetMapping("/all")
-    public Page<UserDto> getAllCustomers() {
-        return userService.getAllCustomerDtos(Pageable.ofSize(PAGE_SIZE));
+    public ResponseEntity<Page<UserDto>> getAllCustomers() {
+        return ResponseEntity.ok(userService.getAllCustomerDtos(Pageable.ofSize(PAGE_SIZE)));
     }
 
     @GetMapping("/{customerId}")
-    public UserDto getOneCustomer(@PathVariable Long customerId) {
-        return userService.getCustomerDtoById(customerId);
+    public ResponseEntity<UserDto> getOneCustomer(@PathVariable Long customerId) {
+        return ResponseEntity.ok(userService.getCustomerDtoById(customerId));
     }
 
     @PutMapping("/")
-    public UserDto updateCustomer(@RequestBody UserDto dto) {
-        return userService.updateCustomer(dto);
+    public ResponseEntity<UserDto> updateCustomer(@RequestBody UserDto dto) {
+        return ResponseEntity.ok(userService.updateCustomer(dto));
     }
 
     @DeleteMapping("/{customerId}")
@@ -60,8 +60,8 @@ public class AdminUserController {
     }
 
     @GetMapping("/{customerId}/orders")
-    public Page<OrderDto> getAllOrdersByCustomerId(@PathVariable Long customerId) {
-        return orderService.getAllOrdersByCustomerId(customerId, Pageable.ofSize(OrderService.PAGE_SIZE));
+    public ResponseEntity<Page<OrderDto>> getAllOrdersByCustomerId(@PathVariable Long customerId) {
+        return ResponseEntity.ok(orderService.getAllOrdersByCustomerId(customerId, Pageable.ofSize(OrderService.PAGE_SIZE)));
     }
 
 }
