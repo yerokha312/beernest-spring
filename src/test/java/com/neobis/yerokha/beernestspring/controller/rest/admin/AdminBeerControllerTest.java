@@ -91,7 +91,7 @@ class AdminBeerControllerTest {
     @Test
     @Order(2)
     void createBeer_unauthorized() throws Exception {
-        Credentials customerCredentials = new Credentials("mike@example.com", "password");
+        Credentials customerCredentials = new Credentials("sarah@example.com", "password");
         String customerToken = authenticationService.login(customerCredentials);
         BeerFullDto dto = new BeerFullDto(
                 0L,
