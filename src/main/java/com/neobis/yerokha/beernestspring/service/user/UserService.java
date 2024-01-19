@@ -2,6 +2,7 @@ package com.neobis.yerokha.beernestspring.service.user;
 
 import com.neobis.yerokha.beernestspring.dto.CreateCustomerDto;
 import com.neobis.yerokha.beernestspring.dto.Credentials;
+import com.neobis.yerokha.beernestspring.dto.EmployeeDto;
 import com.neobis.yerokha.beernestspring.dto.UserDto;
 import com.neobis.yerokha.beernestspring.entity.user.Customer;
 import com.neobis.yerokha.beernestspring.entity.user.Employee;
@@ -192,4 +193,20 @@ public class UserService implements UserDetailsService {
         throw new IllegalArgumentException("Unsupported person type: " + person.getClass());
     }
 
+    public EmployeeDto createEmployee(EmployeeDto dto) {
+        Employee entity = new Employee();
+        entity.setFirstName(dto.firstName());
+        entity.setLastName(dto.lastName());
+        entity.setBirthDate(dto.birthDate());
+        entity.setEmail(dto.email());
+        entity.setPassword(passwordEncoder.encode(dto.password()));
+        entity.setAuthorities(dto.authorities().stream()
+                .map(role -> roleService.getRoleByName(role.getAuthority()))
+                .collect(Collectors.toSet()));
+        entity.setRegistrationTime(LocalDateTime.now());
+        entity = employeeRepository.save(entity);
+        return new EmployeeDto(
+                entity.getId(), entity.getFirstName(), entity.getLastName(), entity.getBirthDate(),
+                entity.getEmail(), null, entity.getAuthorities());
+    }
 }

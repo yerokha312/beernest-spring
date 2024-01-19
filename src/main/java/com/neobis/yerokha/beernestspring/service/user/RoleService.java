@@ -23,4 +23,8 @@ public class RoleService {
             throw new IllegalArgumentException("Role CUSTOMER does not exist");
         }
     }
+
+    public Role getRoleByName(String roleName) {
+        return roleRepository.findByAuthority(roleName);
+    }
 }

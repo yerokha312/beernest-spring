@@ -42,7 +42,8 @@ class AuthenticationControllerTest {
         String json = objectMapper.writeValueAsString(dto);
         mockMvc.perform(post("/v1/register")
                         .contentType(APP_JSON)
-                        .content(json))
+                        .content(json)
+                )
                 .andExpect(status().isCreated())
                 .andExpect(content().string(containsString("john@example.com")));
     }
@@ -55,7 +56,8 @@ class AuthenticationControllerTest {
         String json = objectMapper.writeValueAsString(dto);
         mockMvc.perform(post("/v1/register")
                         .contentType(APP_JSON)
-                        .content(json))
+                        .content(json)
+                )
                 .andExpect(status().isConflict())
                 .andExpect(content().string("The email provided is already taken"));
     }
@@ -66,8 +68,10 @@ class AuthenticationControllerTest {
         Credentials credentials = new Credentials("john@example.com", "password");
         mockMvc.perform(post("/v1/token")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(credentials)))
-                .andExpect(status().isOk());
+                        .content(objectMapper.writeValueAsString(credentials))
+                )
+                .andExpect(status().isOk()
+                );
     }
 
     @Test
@@ -76,9 +80,11 @@ class AuthenticationControllerTest {
         Credentials credentials = new Credentials("john@example.com", "invalid");
         mockMvc.perform(post("/v1/token")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(credentials)))
+                        .content(objectMapper.writeValueAsString(credentials))
+                )
                 .andExpect(status().isUnauthorized())
-                .andExpect(content().string("Username or password is invalid"));
+                .andExpect(content().string("Username or password is invalid")
+                );
 
     }
 }

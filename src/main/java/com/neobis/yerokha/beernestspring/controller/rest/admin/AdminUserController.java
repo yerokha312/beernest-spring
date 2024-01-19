@@ -1,5 +1,6 @@
 package com.neobis.yerokha.beernestspring.controller.rest.admin;
 
+import com.neobis.yerokha.beernestspring.dto.EmployeeDto;
 import com.neobis.yerokha.beernestspring.dto.OrderDto;
 import com.neobis.yerokha.beernestspring.dto.UserDto;
 import com.neobis.yerokha.beernestspring.service.user.OrderService;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +32,12 @@ public class AdminUserController {
         this.orderService = orderService;
     }
 
-    @GetMapping("/")
+    @PostMapping("/")
+    public ResponseEntity<EmployeeDto> createAdmin(@RequestBody EmployeeDto dto) {
+        return new ResponseEntity<>(userService.createEmployee(dto), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/all")
     public Page<UserDto> getAllCustomers() {
         return userService.getAllCustomerDtos(Pageable.ofSize(PAGE_SIZE));
     }

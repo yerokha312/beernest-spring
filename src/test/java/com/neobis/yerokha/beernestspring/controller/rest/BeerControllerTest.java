@@ -42,7 +42,7 @@ class BeerControllerTest {
     }
 
     @Test
-    void getBeer_not_found() throws Exception {
+    void getBeer_notFound() throws Exception {
         mockMvc.perform(get("/v1/beers/24350972")).andExpectAll(
                 status().isNotFound(),
                 content().string("Beer with id: " + 24350972 + " not found.")
