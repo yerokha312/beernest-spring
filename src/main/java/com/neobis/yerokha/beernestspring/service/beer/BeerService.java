@@ -1,10 +1,13 @@
 package com.neobis.yerokha.beernestspring.service.beer;
 
 import com.neobis.yerokha.beernestspring.dto.BeerDto;
+import com.neobis.yerokha.beernestspring.dto.BeerFullDto;
 import com.neobis.yerokha.beernestspring.entity.beer.Beer;
 import com.neobis.yerokha.beernestspring.entity.beer.BeerDescription;
 import com.neobis.yerokha.beernestspring.entity.beer.Brand;
 import com.neobis.yerokha.beernestspring.entity.beer.SubStyle;
+import com.neobis.yerokha.beernestspring.enums.Container;
+import com.neobis.yerokha.beernestspring.enums.Style;
 import com.neobis.yerokha.beernestspring.exception.BeerDoesNotExistException;
 import com.neobis.yerokha.beernestspring.repository.beer.BeerRepository;
 import com.neobis.yerokha.beernestspring.util.BeerMapper;
@@ -34,55 +37,72 @@ public class BeerService {
         this.subStyleService = subStyleService;
     }
 
-    public Beer createBeer(Beer dto) {
+    public BeerFullDto createBeer(BeerFullDto dto) {
+        Beer beer = new Beer();
         Result result = checkFieldDistinction(dto);
 
         BeerDescription beerDescription = new BeerDescription();
-        beerDescription.setDescription(dto.getBeerDescription().getDescription());
+        beerDescription.setDescription(dto.beerDescription());
         BeerDescription savedBeerDescription = beerDescriptionService.createBeerDescription(beerDescription);
 
-        dto.setSubStyle(result.savedSubStyle());
-        dto.setBrand(result.savedBrand());
+        beer.setName(dto.name());
+        beer.setStyle(Style.valueOf(dto.style()));
+        beer.setSubStyle(result.savedSubStyle());
+        beer.setBrand(result.savedBrand());
+        beer.setAlcohol(dto.alcohol());
+        beer.setContainer(Container.valueOf(dto.container()));
+        beer.setSize(dto.size());
+        beer.setPurchasePrice(dto.purchasePrice());
 
-        if (dto.getSellingPrice() == null) {
-            dto.setSellingPrice(dto.getPurchasePrice().multiply(BigDecimal.valueOf(2)));
+        if (dto.sellingPrice() == null) {
+            beer.setSellingPrice(dto.purchasePrice().multiply(BigDecimal.valueOf(2)));
+        } else {
+            beer.setSellingPrice(dto.sellingPrice());
         }
 
-        dto.setBeerDescription(savedBeerDescription);
-        dto.generateCode();
+        beer.setCountry(dto.country());
+        beer.setBeerDescription(savedBeerDescription);
+        beer.generateCode();
 
-        Optional<Beer> existingBeerOpt = beerRepository.findByBeerCode(dto.getBeerCode());
+        Optional<Beer> existingBeerOpt = beerRepository.findByBeerCode(beer.getBeerCode());
 
         // check if beer already exists in db, if yes, just refill storage Amount
         if (existingBeerOpt.isPresent()) {
             Beer existingBeer = existingBeerOpt.get();
-            int updatedStock = existingBeer.getStockAmount() + dto.getStockAmount();
+            int updatedStock = existingBeer.getStockAmount() + dto.stockAmount();
             existingBeer.setStockAmount(updatedStock);
 
-            return beerRepository.save(existingBeer);
-
+            return BeerMapper.mapToBeerFullDto(beerRepository.save(existingBeer));
         } else {
-
-            return beerRepository.save(dto);
+            return BeerMapper.mapToBeerFullDto(beerRepository.save(beer));
         }
     }
 
-    private Result checkFieldDistinction(Beer dto) {
-        SubStyle savedSubStyle = subStyleService.getSubStyleByName(dto.getSubStyle().getName()).orElseGet(() -> {
+    private Result checkFieldDistinction(BeerFullDto dto) {
+        SubStyle savedSubStyle = subStyleService.getSubStyleByName(dto.subStyle()).orElseGet(() -> {
             SubStyle subStyle = new SubStyle();
-            subStyle.setName(dto.getSubStyle().getName());
-            subStyle.setStyle(dto.getStyle());
+            subStyle.setName(dto.subStyle());
+            subStyle.setStyle(Style.valueOf(dto.style()));
             return subStyleService.createSubStyle(subStyle);
         });
 
-        Brand savedBrand = brandService.getBrandByName(dto.getBrand().getName()).orElseGet(() -> {
+        Brand savedBrand = brandService.getBrandByName(dto.brand()).orElseGet(() -> {
             Brand brand = new Brand();
-            brand.setName(dto.getBrand().getName());
+            brand.setName(dto.brand());
             return brandService.createBrand(brand);
         });
 
         return new Result(savedSubStyle, savedBrand);
 
+    }
+
+    public void updateBeer(Beer beer) {
+        beerRepository.save(beer);
+    }
+
+    public BeerDto getBeerDtoById(Long beerId) {
+        Beer beer = getBeerById(beerId);
+        return BeerMapper.mapToBeerDto(beer);
     }
 
     private record Result(SubStyle savedSubStyle, Brand savedBrand) {
@@ -96,16 +116,16 @@ public class BeerService {
 
     }
 
-    public BeerDto getBeerDtoById(Long id) {
-
-        return BeerMapper.mapToBeerDto(beerRepository.findById(id)
-                .orElseThrow(() -> new BeerDoesNotExistException("Beer with id: " + id + " not found.")));
+    public BeerFullDto getBeerFullDtoById(Long id) {
+        return BeerMapper.mapToBeerFullDto(getBeerById(id));
 
     }
 
-    public List<Beer> getAllBeers() {
+    public List<BeerFullDto> getAllBeers() {
 
-        return beerRepository.findAll();
+        return beerRepository.findAll().stream()
+                .map(BeerMapper::mapToBeerFullDto)
+                .collect(Collectors.toList());
 
     }
 
@@ -116,13 +136,13 @@ public class BeerService {
 
     }
 
-    public Beer updateBeer(Beer beer) {
-        beerRepository.findById(beer.getId())
+    public BeerFullDto updateBeerFullDto(BeerFullDto dto) {
+        Beer dbBeer = beerRepository.findById(dto.id())
                 .orElseThrow(() -> new BeerDoesNotExistException("Beer you are trying to update not found."));
+        BeerMapper.mapToBeerEntity(dbBeer, dto);
+        dbBeer.generateCode();
 
-        beer.generateCode();
-
-        return beerRepository.save(beer);
+        return BeerMapper.mapToBeerFullDto(beerRepository.save(dbBeer));
 
     }
 

@@ -1,6 +1,6 @@
 package com.neobis.yerokha.beernestspring.controller.rest.admin;
 
-import com.neobis.yerokha.beernestspring.entity.beer.Beer;
+import com.neobis.yerokha.beernestspring.dto.BeerFullDto;
 import com.neobis.yerokha.beernestspring.service.beer.BeerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -29,24 +28,23 @@ public class AdminBeerController {
     }
 
     @PostMapping("/")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Beer createBeer(@RequestBody Beer beer) {
-        return beerService.createBeer(beer);
+    public ResponseEntity<BeerFullDto> createBeer(@RequestBody BeerFullDto beerFullDto) {
+        return new ResponseEntity<>(beerService.createBeer(beerFullDto), HttpStatus.CREATED);
     }
 
-    @GetMapping("/")
-    public List<Beer> getAllBeers() {
-        return beerService.getAllBeers();
+    @GetMapping("/all")
+    public ResponseEntity<List<BeerFullDto>> getAllBeers() {
+        return ResponseEntity.ok(beerService.getAllBeers());
     }
 
     @GetMapping("/{beerId}")
-    public Beer getBeerById(@PathVariable Long beerId) {
-        return beerService.getBeerById(beerId);
+    public ResponseEntity<BeerFullDto> getBeerById(@PathVariable Long beerId) {
+        return ResponseEntity.ok(beerService.getBeerFullDtoById(beerId));
     }
 
     @PutMapping("/")
-    public Beer updateBeer(@RequestBody Beer beer) {
-        return beerService.updateBeer(beer);
+    public ResponseEntity<BeerFullDto> updateBeer(@RequestBody BeerFullDto dto) {
+        return ResponseEntity.ok(beerService.updateBeerFullDto(dto));
     }
 
     @DeleteMapping("/{beerId}")
