@@ -1,4 +1,20 @@
-run_tests:
-  image: maven:latest
+stages:
+  - test
+
+variables:
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
+
+before_script:
+  - apt-get update -qy
+  - apt-get install -y openjdk-21-jdk
+  - export MAVEN_HOME=/usr/share/maven
+  - export MAVEN_VERSION=4.0.0
+  - export MAVEN_OPTS="-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+  - wget -qO- https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz | tar xz -C /tmp
+  - mv /tmp/apache-maven-$MAVEN_VERSION $MAVEN_HOME
+  - ln -s $MAVEN_HOME/bin/mvn /usr/bin/mvn
+
+test:
+  stage: test
   script:
-    - mvn clean test
+    - mvn $MAVEN_CLI_OPTS test
