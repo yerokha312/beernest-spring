@@ -20,6 +20,7 @@ This project was created and evolved using technologies like:
 8) openssl
 9) Lombok
 10) Postman
+11) Swagger
 
 ...
 
@@ -33,6 +34,10 @@ the amount of product available. Also it has two kind of Controllers: one for ad
 and they are restricted by authorization accordingly.
 
 ### Installation
+
+### Testing
+
+To test the project open test directory and find tests you need or just run all tests at once
 
 ### How To Use
 
