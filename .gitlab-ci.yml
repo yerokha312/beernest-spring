@@ -1,6 +1,4 @@
 run_tests:
-  image: eclipse-temurin:21-alpine
-  before_script:
-    - apt-get update && apt-get install maven
+  image: maven:latest
   script:
     - mvn clean test
