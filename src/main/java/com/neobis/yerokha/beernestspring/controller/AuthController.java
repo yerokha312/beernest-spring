@@ -3,6 +3,7 @@ package com.neobis.yerokha.beernestspring.controller;
 import com.neobis.yerokha.beernestspring.entity.user.Customer;
 import com.neobis.yerokha.beernestspring.service.user.UserService;
 import com.neobis.yerokha.beernestspring.util.CustomerMapper;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+@Hidden
 @Controller
 public class AuthController {
 

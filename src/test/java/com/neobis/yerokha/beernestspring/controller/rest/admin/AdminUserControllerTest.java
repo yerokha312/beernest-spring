@@ -65,7 +65,7 @@ class AdminUserControllerTest {
 
     @Test
     @Order(1)
-    void createAdmin() throws Exception {
+    void createEmployee() throws Exception {
         Set<Role> authorities = new HashSet<>();
         authorities.add(roleService.getRoleByName("OBSERVER"));
         authorities.add(roleService.getRoleByName("ADMIN"));

@@ -6,6 +6,7 @@ import com.neobis.yerokha.beernestspring.dto.Credentials;
 import com.neobis.yerokha.beernestspring.service.user.AuthenticationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,7 @@ class AdminOrderControllerTest {
 
 
     @Test
+    @Order(1)
     void getAllOrders() throws Exception {
 
 
@@ -57,23 +59,25 @@ class AdminOrderControllerTest {
                 )
                 .andExpectAll(
                         status().isOk(),
-                        content().string(containsString("David")),
+                        content().string(containsString("Classic Lager Can")),
                         content().string(containsString("Sarah"))
                 );
     }
 
     @Test
+    @Order(2)
     void getOrderById() throws Exception {
-        mockMvc.perform(get(BASE_URL + 1)
+        mockMvc.perform(get(BASE_URL + 3)
                         .header(AUTH_HEADER, adminBearerToken)
                 )
                 .andExpectAll(
                         status().isOk(),
-                        content().string(containsString("David"))
+                        content().string(containsString("Clark"))
                 );
     }
 
     @Test
+    @Order(3)
     void cancelOrder() throws Exception {
         mockMvc.perform(put(BASE_URL + 1)
                         .header(AUTH_HEADER, adminBearerToken)
@@ -85,6 +89,7 @@ class AdminOrderControllerTest {
     }
 
     @Test
+    @Order(4)
     void cancelOrder_notFound() throws Exception {
         int orderId = 100;
         mockMvc.perform(put(BASE_URL + orderId)

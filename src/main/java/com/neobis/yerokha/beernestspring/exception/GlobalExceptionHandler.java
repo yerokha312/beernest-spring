@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({InvalidPasswordException.class})
     public ResponseEntity<String> handleInvalidPassword(InvalidPasswordException exception) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(exception.getMessage());
     }
 
     @ExceptionHandler({UnableToCancelException.class})
@@ -55,12 +55,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({InvalidCredentialsException.class})
     public ResponseEntity<String> handleInvalidCredentials(InvalidCredentialsException exception) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(exception.getMessage());
     }
 
-    @ExceptionHandler({CustomerIdDoesNotMatch.class})
-    public ResponseEntity<String> handleCustomerIdDoesNotMatch(CustomerIdDoesNotMatch exception) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
+    @ExceptionHandler({CustomerIdDoesNotMatchException.class})
+    public ResponseEntity<String> handleCustomerIdDoesNotMatch(CustomerIdDoesNotMatchException exception) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(exception.getMessage());
     }
 
 }

@@ -74,6 +74,7 @@ public class BeerService {
 
             return BeerMapper.mapToBeerFullDto(beerRepository.save(existingBeer));
         } else {
+            beer.setStockAmount(dto.stockAmount());
             return BeerMapper.mapToBeerFullDto(beerRepository.save(beer));
         }
     }
@@ -148,7 +149,7 @@ public class BeerService {
 
     public void deleteBeerById(Long id) {
         Beer beer = beerRepository.findById(id)
-                .orElseThrow(() -> new BeerDoesNotExistException("Beer you trying to delete not found."));
+                .orElseThrow(() -> new BeerDoesNotExistException("Beer you are trying to delete not found."));
 
         beerRepository.delete(beer);
 

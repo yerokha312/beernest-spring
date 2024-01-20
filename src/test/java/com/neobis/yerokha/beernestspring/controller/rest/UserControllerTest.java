@@ -21,6 +21,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.ANY;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -102,7 +103,7 @@ class UserControllerTest {
         Credentials credentials = new Credentials("bronson@example.com", "password");
         String json = objectMapper.writeValueAsString(credentials);
 
-        mockMvc.perform(put("/v1/users/recovery")
+        mockMvc.perform(post("/v1/users/recovery")
                         .content(json)
                         .contentType(APP_JSON)
                 )

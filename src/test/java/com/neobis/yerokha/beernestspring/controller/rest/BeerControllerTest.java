@@ -29,7 +29,7 @@ class BeerControllerTest {
         mockMvc.perform(get("/v1/beers/all")).andExpectAll(
                 status().isOk(),
                 content().string(containsString("Summer Citrus APA")),
-                content().string(containsString("Bavarian Dunkel Can 2"))
+                content().string(containsString("Hoppy Double IPA 3"))
         );
     }
 

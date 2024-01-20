@@ -80,11 +80,11 @@ public class WebSecurityConfig {
         http
                 .authorizeHttpRequests(authz ->
                         authz
+                                .requestMatchers("/home", "/", "/swagger-ui/**", "/v3/**").permitAll()
                                 .requestMatchers("/registration", "/register", "/registration?success").anonymous()
-                                .requestMatchers("/home", "/").permitAll()
                                 .requestMatchers("/customers/**").hasAuthority("CUSTOMER")
                                 .requestMatchers("/admin/**").hasAuthority("ADMIN")
-                                .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 )
                 .formLogin(form ->
                         form

@@ -24,6 +24,7 @@ create table contact_info
     contact_info_id bigserial,
     phone_number    varchar(255),
     address         varchar(255),
+    is_active       boolean default true,
     primary key (contact_info_id)
 );
 

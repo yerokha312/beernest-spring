@@ -5,7 +5,6 @@ import com.neobis.yerokha.beernestspring.exception.InvalidCredentialsException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,8 +23,7 @@ public class AuthenticationService {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(credentials.username(), credentials.password()));
             return tokenService.generateToken(authentication);
-        } catch (
-                AuthenticationException e) {
+        } catch (Exception e) {
             throw new InvalidCredentialsException("Username or password is invalid");
         }
     }

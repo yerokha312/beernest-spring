@@ -7,7 +7,7 @@ import com.neobis.yerokha.beernestspring.dto.UserDto;
 import com.neobis.yerokha.beernestspring.entity.user.Customer;
 import com.neobis.yerokha.beernestspring.entity.user.Employee;
 import com.neobis.yerokha.beernestspring.entity.user.Person;
-import com.neobis.yerokha.beernestspring.exception.CustomerIdDoesNotMatch;
+import com.neobis.yerokha.beernestspring.exception.CustomerIdDoesNotMatchException;
 import com.neobis.yerokha.beernestspring.exception.EmailAlreadyTakenException;
 import com.neobis.yerokha.beernestspring.exception.InvalidCredentialsException;
 import com.neobis.yerokha.beernestspring.exception.InvalidPasswordException;
@@ -141,7 +141,7 @@ public class UserService implements UserDetailsService {
 
     public UserDto updateProfileInformation(Long id, UserDto userDto) {
         if (!id.equals(userDto.id())) {
-            throw new CustomerIdDoesNotMatch("Id must match");
+            throw new CustomerIdDoesNotMatchException("Id must match");
         }
         Customer dbCustomer = getCustomerById(id);
         CustomerMapper.mapToCustomerEntity(userDto, dbCustomer);
@@ -204,7 +204,11 @@ public class UserService implements UserDetailsService {
                 .map(role -> roleService.getRoleByName(role.getAuthority()))
                 .collect(Collectors.toSet()));
         entity.setRegistrationTime(LocalDateTime.now());
-        entity = employeeRepository.save(entity);
+        try {
+            entity = employeeRepository.save(entity);
+        } catch (Exception e) {
+            throw new EmailAlreadyTakenException("The email provided is already taken");
+        }
         return new EmployeeDto(
                 entity.getId(), entity.getFirstName(), entity.getLastName(), entity.getBirthDate(),
                 entity.getEmail(), null, entity.getAuthorities());

@@ -7,7 +7,7 @@ import com.neobis.yerokha.beernestspring.entity.user.Customer;
 import com.neobis.yerokha.beernestspring.entity.user.Order;
 import com.neobis.yerokha.beernestspring.entity.user.OrderItem;
 import com.neobis.yerokha.beernestspring.enums.Status;
-import com.neobis.yerokha.beernestspring.exception.CustomerIdDoesNotMatch;
+import com.neobis.yerokha.beernestspring.exception.CustomerIdDoesNotMatchException;
 import com.neobis.yerokha.beernestspring.exception.OrderDoesNotExistException;
 import com.neobis.yerokha.beernestspring.exception.OutOfStockException;
 import com.neobis.yerokha.beernestspring.exception.UnableToCancelException;
@@ -42,7 +42,7 @@ public class OrderService {
     public OrderDto createOrder(Long id, CreateOrderDto dto) {
         Customer customer = userService.getCustomerById(id);
         if (!customer.getId().equals(dto.getCustomerId())) {
-            throw new CustomerIdDoesNotMatch("Customer's id does not match");
+            throw new CustomerIdDoesNotMatchException("Customer's id does not match");
         }
 
         Order order = new Order();
