@@ -37,8 +37,7 @@ and they are restricted by authorization accordingly.
 
 ### Testing
 
-To test the project open test directory and find tests you need or just run all tests at once
-
+To run tests just open terminal in root directory and type `mvn clean test`
 ### How To Use
 
 `author` Yerbolat
