@@ -1,9 +1,9 @@
-DROP SCHEMA public CASCADE;
-CREATE SCHEMA public;
-
-GRANT ALL ON SCHEMA public TO postgres;
-GRANT ALL ON SCHEMA public TO public;
-
+-- DROP SCHEMA public CASCADE;
+-- CREATE SCHEMA public;
+--
+-- GRANT ALL ON SCHEMA public TO postgres;
+-- GRANT ALL ON SCHEMA public TO public;
+--
 create table beer_description
 (
     beer_description_id bigserial,

@@ -55,7 +55,7 @@ public class AuthenticationController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Successfully returned a token"),
-            @ApiResponse(responseCode = "401", description = "Username or password is invalid", content = @Content)
+            @ApiResponse(responseCode = "403", description = "Username or password is invalid", content = @Content)
     })
     @PostMapping("/token")
     public ResponseEntity<String> login(@RequestBody Credentials credentials) {
