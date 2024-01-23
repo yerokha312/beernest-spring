@@ -77,12 +77,14 @@ After successful installation:
 You can sign in under predefined admin user using username "admin@test.ru" and password "password" and test the app via Postman.
 
 Or go to [registration](http://localhost:8080/v1/register)  and sign up as a new customer.
-![](/screenshots/registration_scr.jpeg)
 
-Then go to [token](http://localhost:8080/v1/token) and sign in. Obtain returned token
-![](/screenshots/token_scr.jpeg)
+<img src="/screenshots/registration_scr.jpeg" width=50%>
 
-Then you can use protected endpoints after the token was saved under 'Authorization' -> 'Bearer Token' field.
+Then go to [token](http://localhost:8080/v1/token) and sign in. Obtain returned token.
+
+<img src="/screenshots/token_scr.jpeg" width=50%>
+
+Then you can visit protected endpoints after the token was saved under 'Authorization' -> 'Bearer Token' field.
 ### Usage
 
 * Users can browse products without logging in.
