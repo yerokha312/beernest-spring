@@ -1,6 +1,5 @@
 package com.neobis.yerokha.beernestspring.entity.user;
 
-import com.neobis.yerokha.beernestspring.enums.Role;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;

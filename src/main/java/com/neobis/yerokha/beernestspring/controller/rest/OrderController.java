@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,9 +24,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
 
 import static com.neobis.yerokha.beernestspring.service.user.TokenService.getUserIdFromAuthToken;
 
@@ -53,19 +51,14 @@ public class OrderController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Order successfully created"),
-            @ApiResponse(responseCode = "406", description = "Ordered quantity exceeds available stock", content = @Content)
+            @ApiResponse(responseCode = "406", description = "Ordered quantity exceeds available stock",
+                    content = @Content)
     })
     @PostMapping("/")
     public ResponseEntity<OrderDto> createOrder(Authentication authentication,
                                                 @Valid @RequestBody CreateOrderDto dto) {
-        OrderDto createdOrder = orderService.createOrder(getUserIdFromAuthToken(authentication), dto);
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{orderId}")
-                .buildAndExpand(createdOrder.getOrderId())
-                .toUri();
-
-        return ResponseEntity.created(location).body(createdOrder);
+        return new ResponseEntity<>(orderService.createOrder(getUserIdFromAuthToken(authentication), dto),
+                HttpStatus.CREATED);
     }
 
     @Operation(

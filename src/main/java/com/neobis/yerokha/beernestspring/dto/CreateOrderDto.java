@@ -14,9 +14,8 @@ import java.util.List;
 public class CreateOrderDto {
 
     @NotNull
-    private Long customerId;
-    @NotNull
     private ContactInfo contactInfo;
+
     @NotNull
     @NotEmpty
     private List<OrderItemDto> orderItemDtos;

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.neobis.yerokha.beernestspring.dto.Credentials;
 import com.neobis.yerokha.beernestspring.dto.EmployeeDto;
 import com.neobis.yerokha.beernestspring.dto.UserDto;
-import com.neobis.yerokha.beernestspring.enums.Role;
+import com.neobis.yerokha.beernestspring.entity.user.Role;
 import com.neobis.yerokha.beernestspring.service.user.AuthenticationService;
 import com.neobis.yerokha.beernestspring.service.user.RoleService;
 import org.junit.jupiter.api.BeforeEach;
