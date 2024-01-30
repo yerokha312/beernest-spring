@@ -141,4 +141,11 @@ public class OrderService {
     public Page<OrderDto> getAllOrders(Pageable pageable) {
         return orderRepository.findAll(pageable).map(OrderMapper::mapOrderToDto);
     }
+
+    public void updateOrderStatus(Long orderId, Status status) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderDoesNotExistException("Order with id: " + orderId + " not found."));
+        order.setStatus(status);
+    }
+
 }

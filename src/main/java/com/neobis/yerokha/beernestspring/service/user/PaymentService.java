@@ -2,6 +2,7 @@ package com.neobis.yerokha.beernestspring.service.user;
 
 import com.neobis.yerokha.beernestspring.dto.OrderDto;
 import com.neobis.yerokha.beernestspring.dto.OrderRequest;
+import com.neobis.yerokha.beernestspring.dto.OrderResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -32,8 +33,9 @@ public class PaymentService {
         OrderDto order = orderService.getOrderById(orderId);
         OrderRequest request = new OrderRequest(
                 order.getOrderId(),
-                "Beernest company",
-                order.getTotalPrice()
+                "beernest",
+                order.getTotalPrice(),
+                "http://localhost:8100/v1/payments/report"
         );
         return createOrderRequest(request);
     }
@@ -55,5 +57,9 @@ public class PaymentService {
 
         return responseEntity.getBody();
 
+    }
+
+    public void reportPayment(OrderResponse response) {
+        orderService.updateOrderStatus(response.orderId(), response.status());
     }
 }
