@@ -1,6 +1,6 @@
 package com.neobis.yerokha.beernestspring.service.user;
 
-import com.neobis.yerokha.beernestspring.enums.Role;
+import com.neobis.yerokha.beernestspring.entity.user.Role;
 import com.neobis.yerokha.beernestspring.repository.user.RoleRepository;
 import org.springframework.stereotype.Service;
 

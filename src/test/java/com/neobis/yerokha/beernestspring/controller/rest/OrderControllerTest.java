@@ -55,7 +55,6 @@ class OrderControllerTest {
         itemDtoList.add(new CreateOrderDto.OrderItemDto(2L, 1));
         itemDtoList.add(new CreateOrderDto.OrderItemDto(3L, 4));
         itemDtoList.add(new CreateOrderDto.OrderItemDto(4L, 2));
-        dto.setCustomerId(customerId);
         dto.setContactInfo(contactInfo);
         dto.setOrderItemDtos(itemDtoList);
         String json = objectMapper.writeValueAsString(dto);

@@ -1,7 +1,6 @@
 package com.neobis.yerokha.beernestspring.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.neobis.yerokha.beernestspring.enums.Role;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

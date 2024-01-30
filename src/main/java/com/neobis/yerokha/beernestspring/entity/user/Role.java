@@ -1,4 +1,4 @@
-package com.neobis.yerokha.beernestspring.enums;
+package com.neobis.yerokha.beernestspring.entity.user;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

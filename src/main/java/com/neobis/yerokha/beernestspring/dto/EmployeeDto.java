@@ -1,6 +1,6 @@
 package com.neobis.yerokha.beernestspring.dto;
 
-import com.neobis.yerokha.beernestspring.enums.Role;
+import com.neobis.yerokha.beernestspring.entity.user.Role;
 
 import java.time.LocalDate;
 import java.util.Set;
