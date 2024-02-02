@@ -1,17 +1,17 @@
-create table beer_description
+CREATE TABLE beer_description
 (
     beer_description_id IDENTITY PRIMARY KEY,
     description         VARCHAR(255)
 );
 
-create table brand
+CREATE TABLE brand
 (
     brand_id IDENTITY PRIMARY KEY,
     name     VARCHAR(255),
-    unique (name)
+    UNIQUE (name)
 );
 
-create table contact_info
+CREATE TABLE contact_info
 (
     contact_info_id IDENTITY PRIMARY KEY,
     phone_number    VARCHAR(255),
@@ -19,7 +19,7 @@ create table contact_info
     is_active       BOOLEAN DEFAULT TRUE
 );
 
-create table customer
+CREATE TABLE customer
 (
     user_id    IDENTITY,
     first_name VARCHAR(255),
@@ -30,10 +30,10 @@ create table customer
     reg_date   TIMESTAMP(6),
     active     BOOLEAN,
     PRIMARY KEY (user_id),
-    unique (email)
+    UNIQUE (email)
 );
 
-create table customer_contact_junction
+CREATE TABLE customer_contact_junction
 (
     customer_id     BIGINT NOT NULL,
     contact_info_id BIGINT NOT NULL,
@@ -42,7 +42,7 @@ create table customer_contact_junction
     CONSTRAINT fk6i86sqgqnrrngokohpxs2fc1f FOREIGN KEY (customer_id) REFERENCES customer
 );
 
-create table employee
+CREATE TABLE employee
 (
     user_id    IDENTITY,
     first_name VARCHAR(255),
@@ -53,16 +53,16 @@ create table employee
     reg_date   TIMESTAMP(6),
     active     BOOLEAN,
     PRIMARY KEY (user_id),
-    unique (email)
+    UNIQUE (email)
 );
 
-insert into employee (user_id, first_name, last_name, dob, email, password, reg_date, active)
+INSERT INTO employee (user_id, first_name, last_name, dob, email, password, reg_date, active)
 VALUES (10000, 'admin', 'test', '2024-01-13', 'admin@test.ru',
         '$2a$10$qQGmKSkxTutAFsG02GseKOLVhwbp/JEMT54bBnWKUc.YyOWHLpeLq', '2024-01-13', true),
        (10001, 'observer', 'test', '2024-01-13', 'observer@test.ru',
         '$2a$10$5UERl8ptShF3doTo27bG2uvVRqLpfUt1N7WDdD9bAzzra4JqfAKbq', '2024-01-13', true);
 
-create table orders
+CREATE TABLE orders
 (
     order_id        IDENTITY,
     creation_date   TIMESTAMP(6),
@@ -77,18 +77,18 @@ create table orders
     CONSTRAINT orders_status_check CHECK (status IN ('PENDING', 'PAID', 'CANCELED', 'RETURNED'))
 );
 
-create table role
+CREATE TABLE role
 (
     role_id   IDENTITY PRIMARY KEY,
     authority VARCHAR(255)
 );
 
-insert into role (role_id, authority)
+INSERT INTO role (role_id, authority)
 values (1, 'CUSTOMER'),
        (2, 'OBSERVER'),
        (3, 'ADMIN');
 
-create table customer_role_junction
+CREATE TABLE customer_role_junction
 (
     user_id BIGINT  NOT NULL,
     role_id INTEGER NOT NULL,
@@ -97,7 +97,7 @@ create table customer_role_junction
     CONSTRAINT fk9jk8y1c2brvb2sfslptp11ogi FOREIGN KEY (user_id) REFERENCES customer
 );
 
-create table employee_role_junction
+CREATE TABLE employee_role_junction
 (
     user_id BIGINT  NOT NULL,
     role_id INTEGER NOT NULL,
@@ -106,21 +106,21 @@ create table employee_role_junction
     CONSTRAINT fk6p9dhva3kr8obtfieo6gua2ru FOREIGN KEY (user_id) REFERENCES employee
 );
 
-insert into employee_role_junction (user_id, role_id)
+INSERT INTO employee_role_junction (user_id, role_id)
 values (10000, 3),
        (10000, 2),
        (10001, 2);
 
-create table sub_style
+CREATE TABLE sub_style
 (
     sub_style_id IDENTITY PRIMARY KEY,
     name         VARCHAR(255),
     style        VARCHAR(255),
-    unique (name),
+    UNIQUE (name),
     CONSTRAINT sub_style_style_check CHECK (style IN ('ALE', 'LAGER', 'HYBRID'))
 );
 
-create table beer
+CREATE TABLE beer
 (
     beer_id        IDENTITY,
     beer_code      VARCHAR(255),
@@ -138,8 +138,8 @@ create table beer
     sold_amount    BIGINT,
     stock_amount   INTEGER,
     PRIMARY KEY (beer_id),
-    unique (description_id),
-    unique (beer_code),
+    UNIQUE (description_id),
+    UNIQUE (beer_code),
     CONSTRAINT fk65rhv8kyel4a8ekerdc6cw4nc FOREIGN KEY (description_id) REFERENCES beer_description,
     CONSTRAINT fkd9t6c85c90sicbgpnsdip3ifa FOREIGN KEY (brand_id) REFERENCES brand,
     CONSTRAINT fkcq60efkmr5lh0xc57h7qbj1ga FOREIGN KEY (sub_style_id) REFERENCES sub_style,
@@ -147,7 +147,7 @@ create table beer
     CONSTRAINT beer_style_check CHECK (style IN ('ALE', 'LAGER', 'HYBRID'))
 );
 
-create table order_item
+CREATE TABLE order_item
 (
     order_item_id IDENTITY,
     order_id      BIGINT,
